@@ -1,7 +1,6 @@
 import react from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import Router from './router.js'
 
 export default class SignUp extends react.Component {
     constructor(props) {
@@ -30,7 +29,6 @@ export default class SignUp extends react.Component {
         }
 
         this.state.auth.createUserWithEmailAndPassword(this.state.email, this.state.password);
-        return
     }
 
     render() {
