@@ -1,11 +1,10 @@
 import React from 'react';
-import { BrowserRouter , Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import style from './style.scss';
 
 const NavBar = () => {
 
   return  (
-    <BrowserRouter>
       <div>
         <nav>
           <ul>
@@ -25,7 +24,6 @@ const NavBar = () => {
           </ul>
         </nav>
       </div>
-    </BrowserRouter>
   );
 };
 
