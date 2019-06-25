@@ -1,0 +1,7 @@
+ul.comments-list {
+   list-style: inside; 
+   display: block;
+   > li {
+       display: block;
+   }
+}
