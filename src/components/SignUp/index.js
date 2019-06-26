@@ -6,6 +6,7 @@ import firebase_config from "../../helpers/firebase-auth";
 export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             email: '',
             password: '',
@@ -17,19 +18,21 @@ export default class SignUp extends React.Component {
     }
 
     handleChange(event) {
-        this.setState({value: event.target.value})
+        this.setState({
+           [ event.target.name]: event.target.value,
+        });
     }
 
     handleSubmit(event) {
-        event.preventDefault();
-
         if (!this.state.email || !this.state.password) {
             this.state.errors.push('Email ou mot de passe invalide');
             return;
         }
 
         firebase.initializeApp(firebase_config);
-        firebase.createUserWithEmailAndPassword(this.state.email, this.state.password);
+        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
+
+        event.preventDefault();
     }
 
     render() {
@@ -40,12 +43,12 @@ export default class SignUp extends React.Component {
                 ))}
                 <label>
                     Email:
-                    <input type="email" value={this.state.email} onChange={this.handleChange} />
+                    <input type="email" value={this.state.email} onChange={this.handleChange} name="email" />
                 </label>
 
                 <label>
                     Password:
-                    <input type="email" value={this.state.password} onChange={this.handleChange} />
+                    <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
                 </label>
 
                 <input type="submit" value="S'inscrire" />
