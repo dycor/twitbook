@@ -1,15 +1,22 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import firebase_config from "../../helpers/firebase-auth";
+import 'firebase/firestore';
+
+import { Config } from "../../helpers/Config";
+import style from './style.scss';
 
 export default class SignUp extends React.Component {
     constructor(props) {
         super(props);
 
+        this.config = new Config();
+
         this.state = {
             email: '',
             password: '',
+            firstname: '',
+            lastname: '',
             errors: []
         };
 
@@ -29,8 +36,20 @@ export default class SignUp extends React.Component {
             return;
         }
 
-        firebase.initializeApp(firebase_config);
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(this.config.getEnv());
+        }
+
+         const db = firebase.firestore();
+         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+             .then(response => {
+                 db.collection('user').add({
+                   'lastname': this.state.lastname,
+                   'firstname': this.state.firstname,
+                   'email': this.state.email
+                });
+             })
+         ;
 
         event.preventDefault();
     }
@@ -41,17 +60,30 @@ export default class SignUp extends React.Component {
                 {this.state.errors.map(error => (
                     <p key={error}>{error}</p>
                 ))}
-                <label>
-                    Email:
-                    <input type="email" value={this.state.email} onChange={this.handleChange} name="email" />
-                </label>
+                <div className="form-group">
+                    <label>
+                        <span>Nom:</span>
+                        <input type="text" value={this.state.firstname} name="firstname" onChange={this.handleChange}/>
+                    </label>
+                    <label>
+                        <span>Prénom:</span>
+                        <input type="text" value={this.state.lastname} name="lastname" onChange={this.handleChange}/>
+                    </label>
+                </div>
 
-                <label>
-                    Password:
-                    <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
-                </label>
+                <div className="form-group">
+                    <label>
+                        <span>Email:</span>
+                        <input type="email" value={this.state.email} onChange={this.handleChange} name="email" />
+                    </label>
 
-                <input type="submit" value="S'inscrire" />
+                    <label>
+                        <span>Password:</span>
+                        <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
+                    </label>
+                </div>
+
+                <input type="submit" value="S'inscrire" className="submit" />
             </form>
         )
     }

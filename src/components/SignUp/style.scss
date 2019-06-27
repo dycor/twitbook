@@ -1,0 +1,21 @@
+.form-group {
+  padding: 20px;
+  display: flex;
+  flex-flow: column wrap;
+
+  label {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    margin: 10px 0;
+
+    input {
+      border: 1px solid;
+    }
+  }
+}
+
+.submit {
+  margin: 0 auto;
+  display: block;
+}
