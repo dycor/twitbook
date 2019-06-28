@@ -86,7 +86,5 @@ const Tweets = () => {
       <div className='test'/>
     </>
 };
-//
-
 
 export default Tweets;
