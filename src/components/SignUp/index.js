@@ -2,6 +2,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import uuid from 'uuid';
 
 import { Config } from "../../helpers/Config";
 import style from './style.scss';
@@ -17,6 +18,7 @@ export default class SignUp extends React.Component {
             password: '',
             firstname: '',
             lastname: '',
+            pseudo: '',
             errors: []
         };
 
@@ -43,12 +45,18 @@ export default class SignUp extends React.Component {
          const db = firebase.firestore();
          firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
              .then(response => {
-                 db.collection('user').add({
-                   'lastname': this.state.lastname,
-                   'firstname': this.state.firstname,
-                   'email': this.state.email
+                 db.collection('users').add({
+                    'lastname': this.state.lastname,
+                    'firstname': this.state.firstname,
+                    'email': this.state.email,
+                    'pseudo': this.state.pseudo,
+                    'userId': uuid()
                 });
-             })
+
+                 this.props.history.push('/login')
+             }).catch(error => {
+                 this.state.errors.push(error.message);
+            })
          ;
 
         event.preventDefault();
@@ -68,6 +76,13 @@ export default class SignUp extends React.Component {
                     <label>
                         <span>Prénom:</span>
                         <input type="text" value={this.state.lastname} name="lastname" onChange={this.handleChange}/>
+                    </label>
+                </div>
+
+                <div className="form-group">
+                    <label>
+                        <span>Pseudo:</span>
+                        <input type="text" name="pseudo" onChange={this.handleChange} value={this.state.pseudo}/>
                     </label>
                 </div>
 

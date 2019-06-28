@@ -37,10 +37,19 @@ export default class SignIn extends React.Component {
             firebase.initializeApp(this.config.getEnv());
         }
 
+        const db = firebase.firestore();
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(user => {
-                console.info(user);
-                localStorage.setItem('logged', true)
+            .then(response => {
+                db.collection('users').where('email', '==', this.state.email).get()
+                    .then(response => {
+                        response.forEach(user => {
+                            localStorage.setItem('user', JSON.stringify(user.data()));
+                        });
+
+                        this.props.history.push('/')
+                    })
+                ;
+
             }).catch(error => console.error(error))
         ;
 
