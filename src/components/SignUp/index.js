@@ -1,105 +1,84 @@
-import React from 'react';
-import firebase from 'firebase/app';
+import React, {useContext,useState} from 'react';
 import 'firebase/auth';
-import 'firebase/firestore';
 import uuid from 'uuid';
+import './style.scss';
 
-import { Config } from "../../helpers/Config";
-import style from './style.scss';
+import { AppContext } from "../App/AppProvider";
 
-export default class SignUp extends React.Component {
-    constructor(props) {
-        super(props);
+const SignUp = props => {
+  const { getFirebase,getStore } = useContext(AppContext);
+  const firebase = getFirebase();
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [firstname,setFirstname] = useState('');
+  const [lastname,setLastname] = useState('');
+  const [pseudo,setPseudo] = useState('');
+  const [errors,setErrors] = useState([]);
 
-        this.config = new Config();
+  const handleSubmit = event => {
+    event.preventDefault();
 
-        this.state = {
-            email: '',
-            password: '',
-            firstname: '',
-            lastname: '',
-            pseudo: '',
-            errors: []
-        };
+    if (!email || !password) {
+      setErrors(['Email ou mot de passe invalide']);
+    } else {
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+      const db = getStore();
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(response => {
+          db.collection('users').add({
+            'lastname': lastname,
+            'firstname': firstname,
+            'email': email,
+            'pseudo': pseudo,
+            'userId': uuid()
+          });
+
+          props.history.push('/login')
+        }).catch(error => {
+        errors.push(error.message);
+      })
     }
 
-    handleChange(event) {
-        this.setState({
-           [ event.target.name]: event.target.value,
-        });
-    }
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      {errors.map(error => (
+        <p key={error}>{error}</p>
+      ))}
+      <div className="form-group">
+        <label>
+          <span>Nom:</span>
+          <input type="text" value={lastname} name="firstname" onChange={e => setLastname(e.target.value)}/>
+        </label>
+        <label>
+          <span>Prénom:</span>
+          <input type="text" value={firstname} name="lastname" onChange={e => setFirstname(e.target.value)}/>
+        </label>
+      </div>
 
-    handleSubmit(event) {
-        if (!this.state.email || !this.state.password) {
-            this.state.errors.push('Email ou mot de passe invalide');
-            return;
-        }
+      <div className="form-group">
+        <label>
+          <span>Pseudo:</span>
+          <input type="text" name="pseudo" onChange={e => setPseudo(e.target.value)} value={pseudo}/>
+        </label>
+      </div>
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(this.config.getEnv());
-        }
+      <div className="form-group">
+        <label>
+          <span>Email:</span>
+          <input type="email" value={email} onChange={e => setEmail(e.target.value)} name="email" />
+        </label>
 
-         const db = firebase.firestore();
-         firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-             .then(response => {
-                 db.collection('users').add({
-                    'lastname': this.state.lastname,
-                    'firstname': this.state.firstname,
-                    'email': this.state.email,
-                    'pseudo': this.state.pseudo,
-                    'userId': uuid()
-                });
+        <label>
+          <span>Password:</span>
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="password" />
+        </label>
+      </div>
 
-                 this.props.history.push('/login')
-             }).catch(error => {
-                 this.state.errors.push(error.message);
-            })
-         ;
+      <input type="submit" value="S'inscrire" className="submit" />
+    </form>
+  )
 
-        event.preventDefault();
-    }
+};
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                {this.state.errors.map(error => (
-                    <p key={error}>{error}</p>
-                ))}
-                <div className="form-group">
-                    <label>
-                        <span>Nom:</span>
-                        <input type="text" value={this.state.firstname} name="firstname" onChange={this.handleChange}/>
-                    </label>
-                    <label>
-                        <span>Prénom:</span>
-                        <input type="text" value={this.state.lastname} name="lastname" onChange={this.handleChange}/>
-                    </label>
-                </div>
-
-                <div className="form-group">
-                    <label>
-                        <span>Pseudo:</span>
-                        <input type="text" name="pseudo" onChange={this.handleChange} value={this.state.pseudo}/>
-                    </label>
-                </div>
-
-                <div className="form-group">
-                    <label>
-                        <span>Email:</span>
-                        <input type="email" value={this.state.email} onChange={this.handleChange} name="email" />
-                    </label>
-
-                    <label>
-                        <span>Password:</span>
-                        <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
-                    </label>
-                </div>
-
-                <input type="submit" value="S'inscrire" className="submit" />
-            </form>
-        )
-    }
-}
+export default SignUp;

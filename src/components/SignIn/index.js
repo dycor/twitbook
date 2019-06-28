@@ -1,81 +1,58 @@
-import React from 'react';
-import firebase from 'firebase/app';
+import React, {useContext,useState} from 'react';
 import 'firebase/auth';
-import 'firebase/firestore';
+import {AppContext} from "../App/AppProvider";
 
-import { Config } from "../../helpers/Config";
+const SignIn  = props => {
 
-export default class SignIn extends React.Component {
-    constructor(props) {
-        super(props);
+    const { getFirebase,getStore } = useContext(AppContext);
+    const firebase = getFirebase();
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+    const [errors,setErrors] = useState([]);
 
-        this.config = new Config();
+    const handleSubmit = event => {
+        event.preventDefault();
 
-        this.state = {
-            email: '',
-            password: '',
-            errors: []
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({
-            [ event.target.name]: event.target.value,
-        });
-    }
-
-    handleSubmit(event) {
-        if (!this.state.email || !this.state.password) {
-            this.state.errors.push('Email ou mot de passe invalide');
-            return;
-        }
-
-        if (!firebase.apps.length) {
-            firebase.initializeApp(this.config.getEnv());
-        }
-
-        const db = firebase.firestore();
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(response => {
-                db.collection('users').where('email', '==', this.state.email).get()
+        if (!email || !password) {
+            setErrors(['Invalid or password or email']);
+        } else {
+            const db = getStore();
+            firebase.auth().signInWithEmailAndPassword(email, password)
+              .then(response => {
+                  db.collection('users').where('email', '==', email).get()
                     .then(response => {
                         response.forEach(user => {
                             localStorage.setItem('user', JSON.stringify(user.data()));
                         });
 
-                        this.props.history.push('/')
+                        props.history.push('/')
                     })
-                ;
+                  ;
 
-            }).catch(error => console.error(error))
-        ;
+              }).catch(error => setErrors([error.message]));
+        }
+    };
 
-        event.preventDefault();
-    }
+    return (
+      <form onSubmit={handleSubmit}>
+          {errors.map(error => (
+            <p key={error}>{error}</p>
+          ))}
+          <div className="form-group">
+              <label>
+                  <span>Email:</span>
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)} name="email" />
+              </label>
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                {this.state.errors.map(error => (
-                    <p key={error}>{error}</p>
-                ))}
-                <div className="form-group">
-                    <label>
-                        <span>Email:</span>
-                        <input type="email" value={this.state.email} onChange={this.handleChange} name="email" />
-                    </label>
+              <label>
+                  <span>Password:</span>
+                  <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="password" />
+              </label>
+          </div>
 
-                    <label>
-                        <span>Password:</span>
-                        <input type="password" value={this.state.password} onChange={this.handleChange} name="password" />
-                    </label>
-                </div>
+          <input type="submit" value="S'inscrire" className="submit" />
+      </form>
+    );
+};
 
-                <input type="submit" value="S'inscrire" className="submit" />
-            </form>
-        )
-    }
-}
+export default SignIn;
