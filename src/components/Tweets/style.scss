@@ -1,0 +1,29 @@
+@import 'styles/_colors.scss';
+
+.tweetsList {
+  list-style-type: none;
+}
+
+.tweetsList  {
+  padding: 0;
+  margin: 0;
+
+  li {
+    width: 100%;
+    border-bottom: 0.5px solid $grey;
+    padding: 5px;
+    display: flex;
+  }
+
+  .username {
+    color: $grey;
+  }
+
+}
+
+.profilImage{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}

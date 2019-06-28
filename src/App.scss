@@ -1,0 +1,25 @@
+@import 'styles/_colors.scss';
+
+.App {
+  background-color: $main-color;
+  color: white;
+}
+
+h1 {
+  color: white;
+}
+
+.icon {
+  width: 35px;
+  height: 35px;
+  fill : $grey;
+
+}
+
+.active {
+  fill : $third-color !important;
+}
+
+.test {
+  height: 71px;
+}

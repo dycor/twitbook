@@ -1,23 +1,24 @@
+@import 'styles/_colors.scss';
 nav {
   overflow: hidden;
   position: fixed;
   bottom: 0;
   width: 100%;
+  background-color: $second-color;
+  color: white;
+  border-top: 1px solid $grey;
+
+  a:link {
+    text-decoration: none;
+    color: white;
+  }
+
+  ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+  }
+
 }
 
-ul {
-  display: flex;
-  justify-content: space-around;
-  list-style: none;
-  padding: 0;
-}
-
-.navbar li {
-  float: left;
-  display: block;
-  color: #f2f2f2;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 17px;
-}
