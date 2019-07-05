@@ -3,13 +3,16 @@ import './App.css';
 import Router from './router';
 import { BrowserRouter } from "react-router-dom";
 import NavBar from './components/NavBar';
+import AppProvider from "./components/App/AppProvider";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Router/>
-      <NavBar/>
-    </BrowserRouter>
+    <AppProvider >
+      <BrowserRouter>
+        <Router/>
+        <NavBar/>
+      </BrowserRouter>
+    </AppProvider>
   );
 }
 
