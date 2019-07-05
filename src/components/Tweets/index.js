@@ -51,7 +51,6 @@ const Tweets = () => {
     }
   };
 
-
   const addTweet = () => {
     for (let i = 0; i < 150 ; i++) {
       setTimeout(() => {
