@@ -1,4 +1,4 @@
-import React,{ useState}  from 'react';
+import React,{ useState, useMemo }  from 'react';
 import tweetsMock from './tweets.mock';
 import './style.scss';
 
@@ -6,7 +6,6 @@ const Tweets = () => {
 
   const [tweets,setTweets] = useState(tweetsMock);
   const [loading,setLoading] = useState(false);
-  // console.log(tweets);
 
   window.onscroll = function() {
     const d = document.documentElement;
@@ -28,7 +27,7 @@ const Tweets = () => {
     }
   };
 
-  return(
+  return (
     <>
       <ul className="tweetsList">
         { tweets.map( tweet =>
