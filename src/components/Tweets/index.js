@@ -1,35 +1,74 @@
-import React,{ useState, useMemo }  from 'react';
+import React,{ useState, useContext,useEffect }  from 'react';
 import tweetsMock from './tweets.mock';
 import './style.scss';
+import {AppContext} from "../App/AppProvider";
 
+var lastTweet;
+var called = false;
 const Tweets = () => {
 
-  const [tweets,setTweets] = useState(tweetsMock);
+  const [tweets,setTweets] = useState([]);
   const [loading,setLoading] = useState(false);
+  const [newTweet,setNewTweet] = useState('');
+  const { getStore,user } = useContext(AppContext);
+  const store = getStore();
 
+
+  //useEffect quand le composant est monté pour la première fois
+  //Charger les 50 1er tweets
+  //stocker le dernier tweet de ma liste
+  useEffect(() => {
+      if(!called){
+        store.collection('tweets').orderBy('createdAt').limit(50).get().then( doc => {
+          console.log(doc.docs[0].data().text)
+           setTweets([...doc.docs.map(tweet => tweet.data())]);
+          lastTweet = doc.docs[doc.docs.length - 1 ];
+          console.log(lastTweet)
+        });
+
+        // setTweets([...tweetsMock,...tweetsMock,...tweetsMock]);
+        setLoading(true);
+        called = true;
+      }
+    }
+  );
   window.onscroll = function() {
     const d = document.documentElement;
     const offset = d.scrollTop + window.innerHeight;
     const height = d.offsetHeight;
 
-    // console.log('offset = ' + offset);
-    // console.log('height = ' + height);
-
     if (offset === height) {
-      console.log('At the bottom');
-      // setTweets([...tweetsMock,...tweetsMock,...tweetsMock]);
       setLoading(true);
-      setTimeout(function(){
-        setTweets([...tweetsMock,...tweetsMock,...tweetsMock]);
-        setLoading(false);
-        }, 3000);
+      console.log('At the bottom');
+      store.collection('tweets').orderBy('createdAt').startAfter(lastTweet).limit(50).get().then(doc => {
+        setTweets([...tweets,...doc.docs.map(tweet => tweet.data())]);
+        if(doc.docs.length)lastTweet = doc.docs[doc.docs.length - 1 ];
 
+      });
+      setLoading(false);
     }
   };
+
+  const addTweet = () => {
+    store.collection('tweets').add({
+      'userId': user.userId,
+      'username': user.username,
+      'text': newTweet,
+      'createdAt': Date.now(),
+      'NbLike': 0,
+      'NbRetweet': 0,
+      'NbComment': 0
+    });
+    setNewTweet('');
+  } ;
 
   return (
     <>
       <ul className="tweetsList">
+        <div>
+          <textarea rows={5} cols={35} value={newTweet} onChange={e => setNewTweet(e.target.value)} maxLength={140}/>
+          <button onClick={addTweet} className="btn-primary">Tweeter</button>
+        </div>
         { tweets.map( tweet =>
           <li key={Math.random()}>
             <img src={tweet.profilImage} className="profilImage" />
