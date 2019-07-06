@@ -5,8 +5,13 @@ import Tweet from '../Tweet';
 import NewTweet from '../Tweet/newTweet';
 
 var lastTweet;
+<<<<<<< HEAD
 var indexDB ;
 
+=======
+var called = false;
+var indexDB ;
+>>>>>>> wip
 const Tweets = () => {
 
   const [tweets,setTweets] = useState([]);
@@ -17,6 +22,7 @@ const Tweets = () => {
   const store = getStore();
   const ref = useRef( { mounted: false });
 
+<<<<<<< HEAD
   useEffect(() => {
     if(!ref.current.mounted){
       setLoading(true);
@@ -31,6 +37,24 @@ const Tweets = () => {
       ref.current = { mounted: true }
     }
   });
+=======
+
+  //Gérer le cas ou il y'a aucun tweet
+  useEffect(() => {
+    setLoading(true);
+    if(!called){
+        store.collection('tweets').orderBy('createdAt').limit(50).get().then( doc => {
+          indexDB = doc.docs.map(tweet => tweet.data());
+          setTweets([...indexDB]);
+          lastTweet = doc.docs[doc.docs.length - 1 ];
+          setLoading(false);
+
+        });
+        called = true;
+      }
+    }
+  );
+>>>>>>> wip
 
   window.onscroll = function() {
     const d = document.documentElement;
@@ -40,10 +64,15 @@ const Tweets = () => {
     if (offset === height && !loading) {
       setLoading(true);
       console.log('At the bottom');
+<<<<<<< HEAD
       store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet).limit(50).get().then(doc => {
         indexDB = [...indexDB,...doc.docs.map(tweet => {
           return {...tweet.data(), id: tweet.id};
         })];
+=======
+      store.collection('tweets').orderBy('createdAt').startAfter(lastTweet).limit(50).get().then(doc => {
+        indexDB = [...indexDB,...doc.docs.map(tweet => tweet.data())]
+>>>>>>> wip
         setTweets(indexDB);
         if(doc.docs.length) lastTweet = doc.docs[ doc.docs.length - 1 ];
         setLoading(false);
