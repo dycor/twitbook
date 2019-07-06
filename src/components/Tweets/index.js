@@ -5,6 +5,7 @@ import {AppContext} from "../App/AppProvider";
 
 var lastTweet;
 var called = false;
+var indexDB ;
 const Tweets = () => {
 
   const [tweets,setTweets] = useState([]);
@@ -14,24 +15,22 @@ const Tweets = () => {
   const store = getStore();
 
 
-  //useEffect quand le composant est monté pour la première fois
-  //Charger les 50 1er tweets
-  //stocker le dernier tweet de ma liste
+  //Gérer le cas ou il y'a aucun tweet
   useEffect(() => {
-      if(!called){
+    setLoading(true);
+    if(!called){
         store.collection('tweets').orderBy('createdAt').limit(50).get().then( doc => {
-          console.log(doc.docs[0].data().text)
-           setTweets([...doc.docs.map(tweet => tweet.data())]);
+          indexDB = doc.docs.map(tweet => tweet.data());
+          setTweets([...indexDB]);
           lastTweet = doc.docs[doc.docs.length - 1 ];
-          console.log(lastTweet)
-        });
+          setLoading(false);
 
-        // setTweets([...tweetsMock,...tweetsMock,...tweetsMock]);
-        setLoading(true);
+        });
         called = true;
       }
     }
   );
+
   window.onscroll = function() {
     const d = document.documentElement;
     const offset = d.scrollTop + window.innerHeight;
@@ -41,11 +40,13 @@ const Tweets = () => {
       setLoading(true);
       console.log('At the bottom');
       store.collection('tweets').orderBy('createdAt').startAfter(lastTweet).limit(50).get().then(doc => {
-        setTweets([...tweets,...doc.docs.map(tweet => tweet.data())]);
-        if(doc.docs.length)lastTweet = doc.docs[doc.docs.length - 1 ];
+        indexDB = [...indexDB,...doc.docs.map(tweet => tweet.data())]
+        setTweets(indexDB);
+        if(doc.docs.length) lastTweet = doc.docs[ doc.docs.length - 1 ];
+        setLoading(false);
 
       });
-      setLoading(false);
+
     }
   };
 
