@@ -1,10 +1,9 @@
-import React,{ useState, useContext,useEffect }  from 'react';
+import React,{ useState, useContext,useEffect,useRef,useMemo }  from 'react';
 import tweetsMock from './tweets.mock';
 import './style.scss';
 import {AppContext} from "../App/AppProvider";
 
 var lastTweet;
-var called = false;
 var indexDB ;
 const Tweets = () => {
 
@@ -13,34 +12,34 @@ const Tweets = () => {
   const [newTweet,setNewTweet] = useState('');
   const { getStore,user } = useContext(AppContext);
   const store = getStore();
-
+  const ref = useRef( { mounted: false });
 
   //Gérer le cas ou il y'a aucun tweet
   useEffect(() => {
-    setLoading(true);
-    if(!called){
-        store.collection('tweets').orderBy('createdAt').limit(50).get().then( doc => {
+    if(!ref.current.mounted){
+      setLoading(true);
+      store.collection('tweets').orderBy('createdAt','desc').limit(50).get().then( doc => {
           indexDB = doc.docs.map(tweet => tweet.data());
           setTweets([...indexDB]);
           lastTweet = doc.docs[doc.docs.length - 1 ];
           setLoading(false);
 
         });
-        called = true;
-      }
+      ref.current = { mounted: true }
     }
-  );
+  });
 
   window.onscroll = function() {
     const d = document.documentElement;
     const offset = d.scrollTop + window.innerHeight;
     const height = d.offsetHeight;
 
+    console.log(offset,height)
     if (offset === height) {
       setLoading(true);
       console.log('At the bottom');
-      store.collection('tweets').orderBy('createdAt').startAfter(lastTweet).limit(50).get().then(doc => {
-        indexDB = [...indexDB,...doc.docs.map(tweet => tweet.data())]
+      store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet).limit(50).get().then(doc => {
+        indexDB = [...indexDB,...doc.docs.map(tweet => tweet.data())];
         setTweets(indexDB);
         if(doc.docs.length) lastTweet = doc.docs[ doc.docs.length - 1 ];
         setLoading(false);
@@ -63,13 +62,14 @@ const Tweets = () => {
     setNewTweet('');
   } ;
 
-  return (
-    <>
+  return <>
+    {useMemo(() =>
+      <div>
+        <textarea rows={5} cols={35} value={newTweet} onChange={e => setNewTweet(e.target.value)} maxLength={140}/>
+        <button onClick={addTweet} className="btn-primary">Tweeter</button>
+      </div>
+    )}
       <ul className="tweetsList">
-        <div>
-          <textarea rows={5} cols={35} value={newTweet} onChange={e => setNewTweet(e.target.value)} maxLength={140}/>
-          <button onClick={addTweet} className="btn-primary">Tweeter</button>
-        </div>
         { tweets.map( tweet =>
           <li key={Math.random()}>
             <img src={tweet.profilImage} className="profilImage" />
@@ -90,7 +90,16 @@ const Tweets = () => {
       { loading ? <div>Waiting .... </div> : <></>}
       <div className='test'/>
     </>
-  )
 };
+//
+// return useMemo(() => <ul>
+//   {
+//     context.todos.map(todo => <TodoItem
+//       key={todo.text}
+//       todo={todo}
+//     />)
+//   }
+// </ul>, [context.todos]);
+
 
 export default Tweets;
