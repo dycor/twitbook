@@ -166,14 +166,6 @@ const Tweets = () => {
 >>>>>>> tkt presque fini
 };
 //
-// return useMemo(() => <ul>
-//   {
-//     context.todos.map(todo => <TodoItem
-//       key={todo.text}
-//       todo={todo}
-//     />)
-//   }
-// </ul>, [context.todos]);
 
 
 
