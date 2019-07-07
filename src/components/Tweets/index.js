@@ -92,14 +92,6 @@ const Tweets = () => {
     </>
 };
 //
-// return useMemo(() => <ul>
-//   {
-//     context.todos.map(todo => <TodoItem
-//       key={todo.text}
-//       todo={todo}
-//     />)
-//   }
-// </ul>, [context.todos]);
 
 
 export default Tweets;
