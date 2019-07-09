@@ -1,5 +1,6 @@
 import React,{ useState, useContext,useEffect,useRef,useMemo }  from 'react';
 import './style.scss';
+import firebase from '@firebase/app';
 import {AppContext} from "../App/AppProvider";
 import Tweet from '../Tweet';
 
@@ -26,6 +27,7 @@ const Tweets = () => {
         lastTweet = doc.docs[doc.docs.length - 1 ];
         setLoading(false);
         });
+        
       ref.current = { mounted: true }
     }
   });
@@ -67,7 +69,15 @@ const Tweets = () => {
         setNewTweet('');
       }, 300);
     }
+  } ;
 
+const addLike = (e) => {
+    store.collection('likes').add({
+      'id': user.userId + '_' + e.currentTarget.dataset.id, 
+      'userId': user.userId,
+      'tweetId': e.currentTarget.dataset.id,
+    });
+    
   } ;
 
   return <>
@@ -78,7 +88,7 @@ const Tweets = () => {
       </div>
     )}
       <ul className="tweetsList">
-        { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>
+        { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id} addLike={addLike} user={user}/>
 
         )}
       </ul>
@@ -87,6 +97,5 @@ const Tweets = () => {
     </>
 };
 //
-
 
 export default Tweets;
