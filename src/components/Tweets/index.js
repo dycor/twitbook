@@ -1,5 +1,4 @@
 import React,{ useState, useContext,useEffect,useRef,useMemo }  from 'react';
-import tweetsMock from './tweets.mock';
 import './style.scss';
 import {AppContext} from "../App/AppProvider";
 
@@ -14,16 +13,16 @@ const Tweets = () => {
   const store = getStore();
   const ref = useRef( { mounted: false });
 
-  //Gérer le cas ou il y'a aucun tweet
   useEffect(() => {
     if(!ref.current.mounted){
       setLoading(true);
       store.collection('tweets').orderBy('createdAt','desc').limit(50).get().then( doc => {
-          indexDB = doc.docs.map(tweet => tweet.data());
-          setTweets([...indexDB]);
-          lastTweet = doc.docs[doc.docs.length - 1 ];
-          setLoading(false);
-
+        indexDB = doc.docs.map(tweet => {
+          return {...tweet.data(), id: tweet.id};
+        });
+        setTweets([...indexDB]);
+        lastTweet = doc.docs[doc.docs.length - 1 ];
+        setLoading(false);
         });
       ref.current = { mounted: true }
     }
@@ -34,12 +33,13 @@ const Tweets = () => {
     const offset = d.scrollTop + window.innerHeight;
     const height = d.offsetHeight;
 
-    console.log(offset,height)
-    if (offset === height) {
+    if (offset === height && !loading) {
       setLoading(true);
       console.log('At the bottom');
       store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet).limit(50).get().then(doc => {
-        indexDB = [...indexDB,...doc.docs.map(tweet => tweet.data())];
+        indexDB = [...indexDB,...doc.docs.map(tweet => {
+          return {...tweet.data(), id: tweet.id};
+        })];
         setTweets(indexDB);
         if(doc.docs.length) lastTweet = doc.docs[ doc.docs.length - 1 ];
         setLoading(false);
@@ -49,17 +49,23 @@ const Tweets = () => {
     }
   };
 
+
   const addTweet = () => {
-    store.collection('tweets').add({
-      'userId': user.userId,
-      'username': user.username,
-      'text': newTweet,
-      'createdAt': Date.now(),
-      'NbLike': 0,
-      'NbRetweet': 0,
-      'NbComment': 0
-    });
-    setNewTweet('');
+    for (let i = 0; i < 150 ; i++) {
+      setTimeout(() => {
+        store.collection('tweets').add({
+          'userId': user.userId,
+          'username': user.username,
+          'text': 'newTweet '+i,
+          'createdAt': Date.now(),
+          'NbLike': 0,
+          'NbRetweet': 0,
+          'NbComment': 0
+        });
+        setNewTweet('');
+      }, 300);
+    }
+
   } ;
 
   return <>
@@ -71,7 +77,7 @@ const Tweets = () => {
     )}
       <ul className="tweetsList">
         { tweets.map( tweet =>
-          <li key={Math.random()}>
+          <li key={tweet.id} id={tweet.id} onClick={ e => console.log(e.target.id)}>
             <img src={tweet.profilImage} className="profilImage" />
             <div>
               <h3>{tweet.pseudo}</h3>
