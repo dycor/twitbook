@@ -4,8 +4,6 @@ import publicActions from '../../helpers/public-actions';
 import firebase from '@firebase/app';
 import '@firebase/firestore'
 
-// import 'firebase/auth';
-
 import config from "../../helpers/Config";
 
 export const AppContext = createContext({});
@@ -31,15 +29,9 @@ class AppProvider extends Component {
 
   componentDidMount(){
     const user = localStorage.getItem('user');
-    if(user) this.setState({user :user});
+    if(user) this.setState({user : JSON.parse(user)});
 
   }
-
-  // componentWillMount() {
-  //   this.firebase = firebase.initializeApp(config);
-  //   this.store = firebase.firestore();
-  // }
-
 
   render() {
     return (

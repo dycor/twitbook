@@ -12,6 +12,7 @@ const SignUp = props => {
   const [password,setPassword] = useState('');
   const [firstname,setFirstname] = useState('');
   const [lastname,setLastname] = useState('');
+  const [username,setUsername] = useState('');
   const [pseudo,setPseudo] = useState('');
   const [errors,setErrors] = useState([]);
 
@@ -30,6 +31,7 @@ const SignUp = props => {
             'firstname': firstname,
             'email': email,
             'pseudo': pseudo,
+            'username': username,
             'userId': uuid()
           });
 
@@ -60,6 +62,12 @@ const SignUp = props => {
         <label>
           <span>Pseudo:</span>
           <input type="text" name="pseudo" onChange={e => setPseudo(e.target.value)} value={pseudo}/>
+        </label>
+      </div>
+      <div className="form-group">
+        <label>
+          <span>Username:</span>
+          <input type="text" name="username" onChange={e => setUsername(e.target.value)} value={username}/>
         </label>
       </div>
 
