@@ -3,6 +3,7 @@ import './style.scss';
 import { AppContext } from "../App/AppProvider";
 import Tweet from '../Tweet';
 import NewTweet from '../Tweet/newTweet';
+import Spinner from '../Spinner';
 
 var lastTweet;
 var indexDB ;
@@ -77,7 +78,7 @@ const Tweets = () => {
             <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
             </ul>
-            { loading ? <div>Waiting .... </div> : <></>})
+            { loading ? <Spinner/> : <></>}
           </>):
         (<NewTweet newTweet={newTweet} addTweet={addTweet} setNewTweet={setNewTweet} setClosed={setClosed}/>)
     }
