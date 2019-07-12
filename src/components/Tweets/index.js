@@ -1,7 +1,8 @@
-import React,{ useState, useContext,useEffect,useRef,useMemo }  from 'react';
+import React,{ useState, useContext,useEffect,useRef }  from 'react';
 import './style.scss';
-import {AppContext} from "../App/AppProvider";
+import { AppContext } from "../App/AppProvider";
 import Tweet from '../Tweet';
+import NewTweet from '../Tweet/newTweet';
 
 var lastTweet;
 var indexDB ;
@@ -11,6 +12,7 @@ const Tweets = () => {
   const [tweets,setTweets] = useState([]);
   const [loading,setLoading] = useState(false);
   const [newTweet,setNewTweet] = useState('');
+  const [closed,setClosed] = useState(true);
   const { getStore,user } = useContext(AppContext);
   const store = getStore();
   const ref = useRef( { mounted: false });
@@ -25,7 +27,7 @@ const Tweets = () => {
         setTweets([...indexDB]);
         lastTweet = doc.docs[doc.docs.length - 1 ];
         setLoading(false);
-        });
+      });
       ref.current = { mounted: true }
     }
   });
@@ -53,40 +55,34 @@ const Tweets = () => {
 
 
   const addTweet = () => {
-    for (let i = 0; i < 150 ; i++) {
-      setTimeout(() => {
-        store.collection('tweets').add({
-          'userId': user.userId,
-          'username': user.username,
-          'text': 'newTweet '+i,
-          'createdAt': Date.now(),
-          'NbLike': 0,
-          'NbRetweet': 0,
-          'NbComment': 0
-        });
-        setNewTweet('');
-      }, 300);
-    }
+    store.collection('tweets').add({
+      'userId': user.userId,
+      'username': user.username,
+      'text': newTweet,
+      'createdAt': Date.now(),
+      'NbLike': 0,
+      'NbRetweet': 0,
+      'NbComment': 0
+    });
+    setNewTweet('');
+    setClosed(true);
 
   } ;
 
   return <>
-    {useMemo(() =>
-      <div>
-        <textarea rows={5} cols={35} value={newTweet} onChange={e => setNewTweet(e.target.value)} maxLength={140}/>
-        <button onClick={addTweet} className="btn-primary">Tweeter</button>
-      </div>
-    )}
-      <ul className="tweetsList">
-        { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>
-
-        )}
-      </ul>
-      { loading ? <div>Waiting .... </div> : <></>}
-      <div className='test'/>
-    </>
+    {
+      closed ? (
+          <>
+            <button onClick={() => setClosed(false)} className="btn-primary">Tweeter</button>
+            <ul className="tweetsList">
+              { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
+            </ul>
+            { loading ? <div>Waiting .... </div> : <></>})
+          </>):
+        (<NewTweet newTweet={newTweet} addTweet={addTweet} setNewTweet={setNewTweet} setClosed={setClosed}/>)
+    }
+  </>
 };
-//
 
 
 export default Tweets;
