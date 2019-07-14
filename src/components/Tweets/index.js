@@ -40,7 +40,6 @@ const Tweets = () => {
 
     if (offset === height && !loading) {
       setLoading(true);
-      console.log('At the bottom');
       store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet).limit(50).get().then(doc => {
         indexDB = [...indexDB,...doc.docs.map(tweet => {
           return {...tweet.data(), id: tweet.id};
@@ -56,7 +55,7 @@ const Tweets = () => {
 
 
   const addTweet = () => {
-    store.collection('tweets').add({
+    const tweet = {
       'userId': user.userId,
       'username': user.username,
       'text': newTweet,
@@ -64,7 +63,11 @@ const Tweets = () => {
       'NbLike': 0,
       'NbRetweet': 0,
       'NbComment': 0
-    });
+    };
+    store.collection('tweets').add(tweet).then( doc => {
+      indexDB = [ {...tweet, id: doc.id},...indexDB];
+      setTweets(indexDB);
+      });
     setNewTweet('');
     setClosed(true);
 
@@ -78,7 +81,7 @@ const Tweets = () => {
             <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
             </ul>
-            { loading ? <Spinner/> : <></>}
+            { loading ? <Spinner/> : <Spinner/>}
           </>):
         (<NewTweet newTweet={newTweet} addTweet={addTweet} setNewTweet={setNewTweet} setClosed={setClosed}/>)
     }

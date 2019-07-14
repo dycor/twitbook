@@ -10,8 +10,8 @@ function App() {
     <div className="App">
       <AppProvider >
         <BrowserRouter>
-          <Router/>
           <NavBar/>
+          <Router/>
         </BrowserRouter>
       </AppProvider>
     </div>

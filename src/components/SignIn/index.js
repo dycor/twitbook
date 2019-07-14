@@ -50,7 +50,7 @@ const SignIn  = props => {
               </label>
           </div>
 
-          <input type="submit" value="S'inscrire" className="submit" />
+          <input type="submit" value="Se connecter" className="submit" />
       </form>
     );
 };
