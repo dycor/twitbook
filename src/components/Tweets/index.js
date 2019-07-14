@@ -77,7 +77,7 @@ const Tweets = () => {
     {
       closed ? (
           <>
-            <button onClick={() => setClosed(false)} className="btn-primary">Tweeter</button>
+            <button onClick={() => setClosed(false)} className="btn-primary btn-tweet">+</button>
             <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
             </ul>
