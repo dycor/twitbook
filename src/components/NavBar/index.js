@@ -11,7 +11,7 @@ const NavBar = () => {
   console.log(active)
 
   return  (
-      <div>
+      <>
         <nav>
           <ul>
             <li>
@@ -28,7 +28,7 @@ const NavBar = () => {
             </li>
           </ul>
         </nav>
-      </div>
+      </>
   );
 };
 

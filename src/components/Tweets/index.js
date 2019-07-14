@@ -81,7 +81,7 @@ const Tweets = () => {
             <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
             </ul>
-            { loading ? <Spinner/> : <Spinner/>}
+            { loading ? <Spinner/> : <></>}
           </>):
         (<NewTweet newTweet={newTweet} addTweet={addTweet} setNewTweet={setNewTweet} setClosed={setClosed}/>)
     }
