@@ -1,4 +1,5 @@
 import React from 'react';
+import firebase from 'firebase';
 
 class ImageUpload extends React.Component{
 
@@ -11,8 +12,8 @@ class ImageUpload extends React.Component{
 
     const ref = firebase.storage().ref();
     const name = (+new Date()) + '-' + this.state.file.name;
-    console.log(metadate);
-    const task = ref.child(name).put(this.state.file, metadata);
+    
+    const task = ref.child(name).put(this.state.file);
     task.then((snapshot) => {
       console.log(snapshot.downloadURL);
     });
