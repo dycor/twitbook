@@ -23,9 +23,10 @@ nav {
       left: 0;
     }
     @media #{$responsive-medium} {
+      width: auto;
       position: static;
       flex-direction: row;
-      justify-content: flex-start;
+      padding: 0;
     }
 
     > li.li-navbar {
