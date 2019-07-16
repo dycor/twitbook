@@ -11,6 +11,7 @@ const Tweets = () => {
 
   const [tweets,setTweets] = useState([]);
   const [loading,setLoading] = useState(false);
+  const [loadNewTweet,setLoadNewTweet] = useState(false);
   const [newTweet,setNewTweet] = useState('');
   const [closed,setClosed] = useState(true);
   const { getStore,user } = useContext(AppContext);
@@ -18,6 +19,7 @@ const Tweets = () => {
   const ref = useRef( { mounted: false });
   const endTweet = useRef( false);
   const lastTweet = useRef( '');
+  const firstTweet = useRef( '');
 
   useEffect(() => {
     if(!ref.current.mounted){
@@ -28,11 +30,26 @@ const Tweets = () => {
         });
         setTweets([...indexDB]);
         lastTweet.current = doc.docs[doc.docs.length - 1 ];
+        firstTweet.current = doc.docs[0];
         setLoading(false);
       });
       ref.current = { mounted: true }
     }
   });
+
+  const fetchNewtweet = () => {
+    setLoadNewTweet(true);
+    store.collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(50).get().then( doc => {
+      if(doc.docs.length){
+        indexDB = [...doc.docs.map(tweet => {
+          return {...tweet.data(), id: tweet.id};
+        }),...indexDB];
+        if(doc.docs.length) firstTweet.current =  doc.docs[0];
+        setTweets(indexDB);
+      }
+      setLoadNewTweet(false);
+    });
+  };
 
   window.onscroll = function() {
     const d = document.documentElement;
@@ -82,6 +99,8 @@ const Tweets = () => {
     {
       closed ? (
           <>
+            { loadNewTweet ? <Spinner/> : <></>}
+            <button onClick={fetchNewtweet} className="btn-primary">click</button>
             <button onClick={() => setClosed(false)} className="btn-primary btn-tweet">+</button>
             <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
