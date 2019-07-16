@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 
 const Tweet = ({tweet}) =>
-  <li id={tweet.id} onClick={ e => console.log(e.target.id)}>
+  <li id={tweet.id}>
     <img src={tweet.profilImage} className="profilImage" />
     <div>
       <h3>{tweet.pseudo}</h3>
