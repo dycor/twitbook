@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 
-const ImageUpload = () => {
+const ImageUpload = ({setImageUrl , setBase64Image}) => {
 
   const handleChange = e => {
     const file = e.target.files[0];
@@ -16,6 +16,8 @@ const ImageUpload = () => {
     task.then((snapshot) => {
       snapshot.ref.getDownloadURL().then(function(downloadURL) {
         document.querySelector('#uploaded-img').src = downloadURL;
+        setImageUrl(downloadURL);
+        setBase64Image('nobase64now');
       });
     })/*.catch((error) => {
       switch (error.code) {
@@ -29,10 +31,10 @@ const ImageUpload = () => {
     })*/;
   }
   
-  return <div class="component-upload-image">
+  return <div className="component-upload-image">
         <img id="uploaded-img" width="50%"/>
-        <label for="add-image">Ajouter une image</label>
-        <input name="add-image" type="file" onChange={handleChange}/>
+        <label>Ajouter une image</label>
+        <input type="file" onChange={handleChange}/>
       </div>
 }
 

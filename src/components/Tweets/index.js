@@ -77,7 +77,7 @@ const Tweets = () => {
   };
 
 
-  const addTweet = () => {
+  const addTweet = (imageUrl, base64Image) => {
     const tweet = {
       'userId': user.userId,
       'username': user.username,
@@ -85,8 +85,11 @@ const Tweets = () => {
       'createdAt': Date.now(),
       'NbLike': 0,
       'NbRetweet': 0,
-      'NbComment': 0
+      'NbComment': 0,
+      'imageUrl' : imageUrl,
+      'base64Image' : base64Image
     };
+
     store.collection('tweets').add(tweet).then( doc => {
       indexDB = [ {...tweet, id: doc.id},...indexDB];
       setTweets(indexDB);
