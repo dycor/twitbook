@@ -1,18 +1,9 @@
 import React from 'react';
 import firebase from 'firebase';
 
-class ImageUpload extends React.Component{
+const ImageUpload = () => {
 
-  state = {
-    file : null
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    return false;
-  };
-
-  handleChange = e => {
+  const handleChange = e => {
     const file = e.target.files[0];
     const ref = firebase.storage().ref();
     
@@ -37,16 +28,12 @@ class ImageUpload extends React.Component{
       }
     })*/;
   }
-
-  render(){
-    return <div class="component-upload-image">
+  
+  return <div class="component-upload-image">
         <img id="uploaded-img" width="50%"/>
-        <form onSubmit={this.handleSubmit}>
-          <label for="add-image">Ajouter une image</label>
-          <input name="add-image" type="file" onChange={this.handleChange}/>
-      </form>
+        <label for="add-image">Ajouter une image</label>
+        <input name="add-image" type="file" onChange={handleChange}/>
       </div>
-  }
 }
 
 export default ImageUpload;
