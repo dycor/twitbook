@@ -4,6 +4,7 @@ import firebase from '@firebase/app';
 import {AppContext} from "../App/AppProvider";
 import Tweet from '../Tweet';
 
+
 var lastTweet;
 var indexDB ;
 
@@ -47,9 +48,7 @@ const Tweets = () => {
         setTweets(indexDB);
         if(doc.docs.length) lastTweet = doc.docs[ doc.docs.length - 1 ];
         setLoading(false);
-
       });
-
     }
   };
 
@@ -71,14 +70,77 @@ const Tweets = () => {
     }
   } ;
 
-const addLike = (e) => {
+function addLike(tweetId){
     store.collection('likes').add({
-      'id': user.userId + '_' + e.currentTarget.dataset.id, 
+      'id': user.userId + '_' + tweetId,
       'userId': user.userId,
-      'tweetId': e.currentTarget.dataset.id,
+      'tweetId': tweetId,
     });
-    
-  } ;
+    let tweetRef = store.collection('tweets').doc(tweetId);
+    let tweet = tweetRef.get()
+    .then(doc => {
+        tweetRef.update({
+          NbLike: doc.data().NbLike +1
+        });
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
+  };
+
+function removeLike(tweetId) {
+  store.collection('likes').doc(user.userId + '_' + tweetId).delete().then(e => {
+    let tweetRef = store.collection('tweets').doc(tweetId);
+    let tweet = tweetRef.get()
+    .then(doc => {
+        tweetRef.update({
+          NbLike: doc.data().NbLike -1
+        });
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
+  })
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
+};
+
+function isLiked(tweetId) {
+  if(user){
+    var query = store.collection("likes").where("id", "==", user.userId + "_" + tweetId).get()
+    .then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        console.log('Document data:', doc.data());
+      }
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
+    // 
+    // .then(snapshot => {
+     // var query = LikeRef.where('id', '==', user.userId + '_' + tweetId).get()
+    //   console.log(test);
+    //   // if (snapshot.empty) {
+    //   //   console.log(snapshot);
+    //   //   return false;
+    //   // }
+    //   // snapshot.forEach(doc => {
+    //   //   console.log(doc);
+    //   //   // var result =snapshot.child("likes").child("id").val();
+    //   //   return true;
+    //   // });
+    // })
+    // .catch(err => {
+    //   console.log('Error getting documents', err);
+    // });
+  return false;
+    }
+  }
+
+  
 
   return <>
     {useMemo(() =>
@@ -88,8 +150,7 @@ const addLike = (e) => {
       </div>
     )}
       <ul className="tweetsList">
-        { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id} addLike={addLike} user={user}/>
-
+        { tweets.map( tweet => <Tweet tweet={tweet} nbLike={tweet.nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}/>
         )}
       </ul>
       { loading ? <div>Waiting .... </div> : <></>}
