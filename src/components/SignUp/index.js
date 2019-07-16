@@ -21,6 +21,8 @@ const SignUp = props => {
 
     if (!email || !password) {
       setErrors(['Email ou mot de passe invalide']);
+    }else if (!password.length < 6) {
+      setErrors(['Le mot de passe dois avoir 6 caractères minimums'])
     } else {
 
       const db = getStore();
