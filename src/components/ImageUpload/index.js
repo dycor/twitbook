@@ -9,42 +9,43 @@ class ImageUpload extends React.Component{
 
   handleSubmit = e => {
     e.preventDefault();
-
-    const ref = firebase.storage().ref();
-    const name = (+new Date()) + '-' + this.state.file.name;
-    
-    const task = ref.child(name).put(this.state.file);
-    task.then((snapshot) => {
-      console.log(snapshot.downloadURL);
-    });
-    
-    task.then((snapshot) => {
-      document.querySelector('#someImageTagID').src = snapshot.downloadURL;
-    }).catch((error) => {
-      // A list of errors can be found at
-      // https://firebase.google.com/docs/storage/web/handle-errors
-      switch (error.code) {
-        case 'storage/unauthorized':
-          // User doesn't have permission to access the object
-          break;
-        case 'storage/canceled':
-          // User canceled the upload
-          break;
-        case 'storage/unknown':
-          // Unknown error occurred
-          break;
-      }
-    })
-    //this.props.onNew(this.state);
     return false;
   };
 
+  handleChange = e => {
+    const file = e.target.files[0];
+    const ref = firebase.storage().ref();
+    
+    const name = (+new Date()) + '-' + file.name;
+    const dirFolder = 'tweets/';
+    const path = dirFolder + name;
+    
+    const task = ref.child(path).put(file);
+
+    task.then((snapshot) => {
+      snapshot.ref.getDownloadURL().then(function(downloadURL) {
+        document.querySelector('#uploaded-img').src = downloadURL;
+      });
+    })/*.catch((error) => {
+      switch (error.code) {
+        case 'storage/unauthorized':
+          break;
+        case 'storage/canceled':
+          break;
+        case 'storage/unknown':
+          break;
+      }
+    })*/;
+  }
+
   render(){
-    return <form onSubmit={this.handleSubmit}>
-        <label for="add-image">Ajouter une image</label>
-        <input name="add-image" type="file" onChange={ event => this.setState({file : event.target.files[0]})}/>
-      <button type="submit">Valider</button>
-    </form>
+    return <div class="component-upload-image">
+        <img id="uploaded-img" width="50%"/>
+        <form onSubmit={this.handleSubmit}>
+          <label for="add-image">Ajouter une image</label>
+          <input name="add-image" type="file" onChange={this.handleChange}/>
+      </form>
+      </div>
   }
 }
 
