@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
-import React from "react";
+import React, {useState} from "react";
+import storage from 'firebase';
 
 const Tweet = ({tweet}) =>
   <li id={tweet.id}>
@@ -10,11 +11,13 @@ const Tweet = ({tweet}) =>
     </div>
 
     <p>{tweet.text} </p>
+    <img src={tweet.imageUrl} alt="temp alt"></img>
     <div>
       <span><img className="icon" src="http://www.logospng.com/images/66/ajax-comment-system-for-laravel-66079.png"/>{tweet.nbComment}</span>
       <span><img className="icon" src="https://previews.123rf.com/images/avectors/avectors1803/avectors180300188/98093154-heart-logo-vector-icon-isolated-modern-abstract-line-black-heart-symbol-.jpg"/>{tweet.nbLike}</span>
       <span><img className="icon" src="https://www.nicepng.com/png/detail/24-241083_twitter-retweet-png.png"/>{tweet.nbRetweet}</span>
     </div>
   </li>;
+}
 
 export default Tweet;
