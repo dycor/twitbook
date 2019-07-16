@@ -5,7 +5,6 @@ import Tweet from '../Tweet';
 import NewTweet from '../Tweet/newTweet';
 import Spinner from '../Spinner';
 
-var lastTweet;
 var indexDB ;
 
 const Tweets = () => {
@@ -17,6 +16,8 @@ const Tweets = () => {
   const { getStore,user } = useContext(AppContext);
   const store = getStore();
   const ref = useRef( { mounted: false });
+  const endTweet = useRef( false);
+  const lastTweet = useRef( '');
 
   useEffect(() => {
     if(!ref.current.mounted){
@@ -26,7 +27,7 @@ const Tweets = () => {
           return {...tweet.data(), id: tweet.id};
         });
         setTweets([...indexDB]);
-        lastTweet = doc.docs[doc.docs.length - 1 ];
+        lastTweet.current = doc.docs[doc.docs.length - 1 ];
         setLoading(false);
       });
       ref.current = { mounted: true }
@@ -40,12 +41,16 @@ const Tweets = () => {
 
     if (offset === height && !loading) {
       setLoading(true);
-      store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet).limit(50).get().then(doc => {
+      store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet.current).limit(50).get().then(doc => {
         indexDB = [...indexDB,...doc.docs.map(tweet => {
           return {...tweet.data(), id: tweet.id};
         })];
         setTweets(indexDB);
-        if(doc.docs.length) lastTweet = doc.docs[ doc.docs.length - 1 ];
+        if(doc.docs.length){
+          lastTweet.current = doc.docs[ doc.docs.length - 1 ];
+        } else {
+          endTweet.current = true;
+        }
         setLoading(false);
 
       });
@@ -81,7 +86,7 @@ const Tweets = () => {
             <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
             </ul>
-            { loading ? <Spinner/> : <></>}
+            { loading && !endTweet.current ? <Spinner/> : <></>}
           </>):
         (<NewTweet newTweet={newTweet} addTweet={addTweet} setNewTweet={setNewTweet} setClosed={setClosed}/>)
     }
