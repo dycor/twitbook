@@ -1,0 +1,9 @@
+$br-S: 576px;
+$br-M: 768px;
+$br-L: 992px;
+$br-XL: 1200px;
+
+$responsive-small: "only screen and (max-width: #{$br-S})";
+$responsive-medium: "only screen and (max-width: #{$br-M})";
+$responsive-large: "only screen and (max-width: #{$br-L})";
+$responsive-xl: "only screen and (max-width: #{$br-XL})";

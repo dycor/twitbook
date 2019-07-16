@@ -1,8 +1,13 @@
 @import 'styles/_colors.scss';
+@import 'styles/_variables.scss';
 
 .App {
   background-color: $main-color;
+  display: flex;
   color: white;
+  @media #{$responsive-medium} {
+    flex-direction: column;
+  }
 }
 
 h1 {
@@ -14,10 +19,6 @@ h1 {
   height: 35px;
   fill : $grey;
 
-}
-
-.active {
-  fill : $third-color !important;
 }
 
 .test {
