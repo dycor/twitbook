@@ -18,6 +18,5 @@ const Tweet = ({tweet}) =>
       <span><img className="icon" src="https://www.nicepng.com/png/detail/24-241083_twitter-retweet-png.png"/>{tweet.nbRetweet}</span>
     </div>
   </li>;
-}
 
 export default Tweet;
