@@ -48,7 +48,7 @@ const Profile = ({ match }) => {
       <img/>
       <span>{profile.pseudo}</span>
       <span>@{profile.username}</span>
-      <button onClick={follow} style={style}>{followed ? 'Abonné':'Suivre'}</button>
+     { user.id !== profile.id ?<button onClick={follow} style={style}>{followed ? 'Abonné':'Suivre'}</button> : <></>}
     </div>
     <div>
       <span>Tweets</span>
