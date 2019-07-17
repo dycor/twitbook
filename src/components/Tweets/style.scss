@@ -91,6 +91,10 @@
 a.tweetbook-add-message {
   position: fixed;
   bottom: 3rem; right: 3rem;
+  @media #{$responsive-medium}{
+    bottom: 1rem;
+    right: 1rem;
+  }
   &:hover {
     > div.inner {
       > p.hidden-message {
@@ -107,15 +111,21 @@ a.tweetbook-add-message {
     position: relative;
     background-color: rgba($color: $primaryColor, $alpha: 0.8);
     margin: 0; padding: 0;
+    @media #{$responsive-medium}{
+      width: 3.5rem;
+      height: 3.5rem;
+    }
     > p.visible-message {
       margin: 0; padding: 0;
       font-size: 2rem;
       color: $colorWhite;
       position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       z-index: 10;
       left: 0; right: 0;
       top: 0; bottom: 0;
-      text-align: center;
     }
     > p.hidden-message {
       position: absolute;
@@ -134,6 +144,58 @@ a.tweetbook-add-message {
       width: 0;
       opacity: 0;
       transition: opacity .3s ease, width .3s ease, background-color .3s ease;
+    }
+  }
+}
+
+.add-tweet-component {
+  width: 100%;
+  > div.form-container {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    flex-direction: column;
+    width: 60%;
+    > div.options {
+      text-align: center;
+      margin-top: 0.3rem;
+      margin-bottom: 2rem;
+      > button {
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        border-radius: 0.3rem;
+      }
+    }
+    > div.form {
+      margin-bottom: 1rem;
+      > textarea {
+        min-width: 100%;
+        max-width: 100%;
+        font-size: 1.2rem;
+      }
+      > div.component-upload-image {
+        display: flex;
+        flex-direction: column;
+        > label {
+          font-size: 1.1rem;
+          margin: 1rem 0;
+        }
+        > input {
+          font-size: 1.1rem;
+        }
+        #uploaded-img {
+          display: none;
+          width: 100%;
+          margin-top: 1rem;
+        }
+      }
+    }
+    > div.submit {
+      > button {
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        border-radius: 0.3rem;
+      }
     }
   }
 }

@@ -5,6 +5,7 @@
   background-color: $main-color;
   display: flex;
   color: white;
+  min-height: 100vh;
   @media #{$responsive-medium} {
     flex-direction: column;
   }
