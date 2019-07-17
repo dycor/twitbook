@@ -21,7 +21,7 @@ const SignUp = props => {
 
     if (!email || !password) {
       setErrors(['Email ou mot de passe invalide']);
-    }else if (!password.length < 6) {
+    }else if (password.length < 6) {
       setErrors(['Le mot de passe dois avoir 6 caractères minimums'])
     } else {
 
@@ -35,6 +35,9 @@ const SignUp = props => {
             'pseudo': pseudo,
             'username': username,
             'userId': uuid()
+          }).then(user => {
+            console.log(user)
+            db.collection('feed').doc(user.id).collection('tweets');
           });
 
           props.history.push('/login')

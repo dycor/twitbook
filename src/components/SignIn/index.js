@@ -21,8 +21,9 @@ const SignIn  = props => {
               .then(response => {
                   db.collection('users').where('email', '==', email).get()
                     .then(response => {
+                      console.log(response)
                         response.forEach(user => {
-                            localStorage.setItem('user', JSON.stringify(user.data()));
+                            localStorage.setItem('user', JSON.stringify({id:user.id,...user.data()}));
                         });
 
                         props.history.push('/')
