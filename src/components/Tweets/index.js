@@ -71,8 +71,7 @@ const Tweets = () => {
   } ;
 
 function addLike(tweetId){
-    store.collection('likes').add({
-      'id': user.userId + '_' + tweetId,
+    store.collection('likes').doc(user.userId + "_" + tweetId).set({
       'userId': user.userId,
       'tweetId': tweetId,
     });
@@ -89,7 +88,7 @@ function addLike(tweetId){
   };
 
 function removeLike(tweetId) {
-  store.collection('likes').doc(user.userId + '_' + tweetId).delete().then(e => {
+  store.collection('likes').doc(user.userId + "_" + tweetId).delete().then(e => {
     let tweetRef = store.collection('tweets').doc(tweetId);
     let tweet = tweetRef.get()
     .then(doc => {
@@ -106,41 +105,13 @@ function removeLike(tweetId) {
   });
 };
 
-function isLiked(tweetId) {
-  if(user){
-    var query = store.collection("likes").where("id", "==", user.userId + "_" + tweetId).get()
-    .then(doc => {
-      if (!doc.exists) {
-        console.log('No such document!');
-      } else {
-        console.log('Document data:', doc.data());
-      }
-    })
-    .catch(err => {
+  async function isLiked(tweetId) {
+    try {
+      if (user) return await store.collection("likes").doc(user.userId + "_" + tweetId).get();
+    } catch (err) {
       console.log('Error getting document', err);
-    });
-    // 
-    // .then(snapshot => {
-     // var query = LikeRef.where('id', '==', user.userId + '_' + tweetId).get()
-    //   console.log(test);
-    //   // if (snapshot.empty) {
-    //   //   console.log(snapshot);
-    //   //   return false;
-    //   // }
-    //   // snapshot.forEach(doc => {
-    //   //   console.log(doc);
-    //   //   // var result =snapshot.child("likes").child("id").val();
-    //   //   return true;
-    //   // });
-    // })
-    // .catch(err => {
-    //   console.log('Error getting documents', err);
-    // });
-  return false;
     }
   }
-
-  
 
   return <>
     {useMemo(() =>
@@ -157,6 +128,5 @@ function isLiked(tweetId) {
       <div className='test'/>
     </>
 };
-//
 
 export default Tweets;

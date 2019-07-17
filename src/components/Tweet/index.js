@@ -4,9 +4,10 @@ import Tweets from '../Tweets';
 import Like from '../Like';
 
 
-const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) =>
+const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
+//  const liked = await isLiked(tweet.id);
 
-  <li id={tweet.id} onClick={ e => console.log(e.target.id)}>
+ return <li id={tweet.id} onClick={ e => console.log(e.target.id)}>
     <img src={tweet.profilImage} className="profilImage" />
     <div>
       <h3>{tweet.pseudo}</h3>
@@ -16,9 +17,9 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) =>
     <p>{tweet.text}</p>
     <div>
       <span><img className="icon" src="http://www.logospng.com/images/66/ajax-comment-system-for-laravel-66079.png"/>{tweet.nbComment}</span>
-      <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked(tweet.id)}></Like>
+      <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}></Like>
       <span><img className="icon" src="https://www.nicepng.com/png/detail/24-241083_twitLiketer-retweet-png.png"/>{tweet.nbRetweet}</span>
     </div>
   </li>;
-
+}
 export default Tweet;
