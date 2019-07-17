@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
-import storage from 'firebase';
+import Like from '../Like';
 
-const Tweet = ({tweet}) =>
-  <li id={tweet.id}>
+const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
+ return <li id={tweet.id}>
     <img src={tweet.profilImage} className="profilImage" />
     <div>
       <h3>{tweet.pseudo}</h3>
@@ -14,9 +14,10 @@ const Tweet = ({tweet}) =>
     <img src={tweet.imageUrl} alt="temp alt"></img>
     <div>
       <span><img className="icon" src="http://www.logospng.com/images/66/ajax-comment-system-for-laravel-66079.png"/>{tweet.nbComment}</span>
-      <span><img className="icon" src="https://previews.123rf.com/images/avectors/avectors1803/avectors180300188/98093154-heart-logo-vector-icon-isolated-modern-abstract-line-black-heart-symbol-.jpg"/>{tweet.nbLike}</span>
+      <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}></Like>
       <span><img className="icon" src="https://www.nicepng.com/png/detail/24-241083_twitter-retweet-png.png"/>{tweet.nbRetweet}</span>
     </div>
   </li>;
+}
 
 export default Tweet;
