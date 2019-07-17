@@ -46,17 +46,25 @@ const Tweets = () => {
   });
 
   const fetchNewtweet = () => {
-    setLoadNewTweet(true);
-    store.collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( doc => {
-      if(doc.docs.length){
-        indexDB = [...doc.docs.map(tweet => {
-          return {...tweet.data(), id: tweet.id};
-        }),...indexDB];
-        if(doc.docs.length) firstTweet.current =  doc.docs[0];
-        setTweets(indexDB);
+    setLoadNewTweet(true)  ;
+
+    store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( allDocs => {
+      if(allDocs.docs.length){
+        var userTweets = [];
+        Promise.all(allDocs.docs.map(doc => {
+          const path = doc.data().path;
+          return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
+        })).then(() => {
+          indexDB = [...userTweets,...indexDB];
+          if(allDocs.docs.length) firstTweet.current =  allDocs.docs[0];
+          setTweets(indexDB);
+          setLoadNewTweet(false);
+        })
+      } else {
+        setLoadNewTweet(false);
       }
-      setLoadNewTweet(false);
     });
+
   };
 
   window.onscroll = function() {
@@ -106,12 +114,11 @@ const Tweets = () => {
     };
 
     store.collection('tweets').add(tweet).then( doc => {
-      indexDB = [ {...tweet, id: doc.id},...indexDB];
-      setTweets(indexDB);
 
       //Refacto
       //Ensuite rajouter pour tous les users dont je suis abonnées
       store.collection('feed').doc(idUser).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
+      fetchNewtweet();
 
     });
     setNewTweet('');
