@@ -66,9 +66,6 @@ const Tweets = () => {
 
     if (offset === height && !loading) {
       setLoading(true);
-
-
-      //refacto
       store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet.current).limit(limit).get().then( allDocs => {
         var userTweets = [];
         Promise.all(allDocs.docs.map(doc => {
