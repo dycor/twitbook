@@ -15,22 +15,22 @@ const NavBar = () => {
         <nav>
           <ul>
             <li className={'li-navbar' + (active === 'home' ? ' active' : '')}>
-              <Link to="/"  onClick={() => setActive('home')}><Home className={'icon'+(active === 'home' ? ' active' : '')}/>
+              <Link to="/"  onClick={() => setActive('home')} aria-label="Accueil"><Home className={'icon'+(active === 'home' ? ' active' : '')}/>
                 <p>Accueil</p>
               </Link>
             </li>
             <li className={'li-navbar' + (active === 'search' ? ' active' : '')}>
-              <Link to="/search" onClick={() => setActive('search')}><Search className={'icon'+(active === 'search' ? ' active' : '')}/>
+              <Link to="/search" onClick={() => setActive('search')} aria-label="Recherche"><Search className={'icon'+(active === 'search' ? ' active' : '')}/>
                 <p>Rechercher</p>
               </Link>
             </li>
             <li className={'li-navbar' + (active === 'notifications' ? ' active' : '')}>
-              <Link to="/notifications" onClick={() => setActive('notifications')}><Bell className={'icon'+(active === 'notifications' ? ' active' : '')}/>
+              <Link to="/notifications" onClick={() => setActive('notifications')} aria-label="Notifications"><Bell className={'icon'+(active === 'notifications' ? ' active' : '')}/>
               <p>Notifications</p>
               </Link>
             </li>
             <li className={'li-navbar' + (active === 'messages' ? ' active' : '')}>
-              <Link to="/messages" onClick={() => setActive('messages')}><Mail className={'icon'+(active === 'messages' ? ' active' : '')}/>
+              <Link to="/messages" onClick={() => setActive('messages')} aria-label="Messages"><Mail className={'icon'+(active === 'messages' ? ' active' : '')}/>
                 <p>Messages</p>
               </Link>
             </li>
