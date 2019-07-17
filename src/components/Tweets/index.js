@@ -6,6 +6,7 @@ import NewTweet from '../Tweet/newTweet';
 import Spinner from '../Spinner';
 
 var indexDB ;
+const idUser = 'CS4ktupxvRaoJqESQRw6';
 
 const Tweets = () => {
 
@@ -20,27 +21,33 @@ const Tweets = () => {
   const endTweet = useRef( false);
   const lastTweet = useRef( '');
   const firstTweet = useRef( '');
+  const limit = 50;
 
 
   useEffect(() => {
     if(!ref.current.mounted){
       setLoading(true);
-      store.collection('tweets').orderBy('createdAt','desc').limit(50).get().then( doc => {
-        indexDB = doc.docs.map(tweet => {
-          return {...tweet.data(), id: tweet.id};
-        });
-        setTweets([...indexDB]);
-        lastTweet.current = doc.docs[doc.docs.length - 1 ];
-        firstTweet.current = doc.docs[0];
-        setLoading(false);
+      store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').limit(limit).get().then( allDocs => {
+        var userTweets = [];
+        Promise.all(allDocs.docs.map(doc => {
+          const path = doc.data().path;
+          return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
+        })).then(() => {
+          indexDB = userTweets;
+          setTweets(indexDB);
+          lastTweet.current = allDocs.docs[allDocs.docs.length - 1 ];
+          firstTweet.current = allDocs.docs[0];
+          setLoading(false);
+        })
       });
-      ref.current = { mounted: true }
+
+      ref.current = { mounted: true };
     }
   });
 
   const fetchNewtweet = () => {
     setLoadNewTweet(true);
-    store.collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(50).get().then( doc => {
+    store.collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( doc => {
       if(doc.docs.length){
         indexDB = [...doc.docs.map(tweet => {
           return {...tweet.data(), id: tweet.id};
@@ -59,18 +66,27 @@ const Tweets = () => {
 
     if (offset === height && !loading) {
       setLoading(true);
-      store.collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet.current).limit(50).get().then(doc => {
-        indexDB = [...indexDB,...doc.docs.map(tweet => {
-          return {...tweet.data(), id: tweet.id};
-        })];
-        setTweets(indexDB);
-        if(doc.docs.length){
-          lastTweet.current = doc.docs[ doc.docs.length - 1 ];
-        } else {
-          endTweet.current = true;
-        }
-        setLoading(false);
 
+
+      //refacto
+      store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet.current).limit(limit).get().then( allDocs => {
+        var userTweets = [];
+        Promise.all(allDocs.docs.map(doc => {
+          const path = doc.data().path;
+          return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
+        })).then(() => {
+          indexDB = [...indexDB,...userTweets];
+          setTweets(indexDB);
+
+          if(allDocs.docs.length){
+            lastTweet.current = allDocs.docs[ allDocs.docs.length - 1 ];
+          } else {
+            endTweet.current = true;
+          }
+          setLoading(false);
+
+
+        })
       });
 
     }
@@ -78,11 +94,13 @@ const Tweets = () => {
 
 
   const addTweet = (imageUrl, base64Image) => {
+
+    const createdAt =  Date.now();
     const tweet = {
       'userId': user.userId,
       'username': user.username,
       'text': newTweet,
-      'createdAt': Date.now(),
+      createdAt,
       'NbLike': 0,
       'NbRetweet': 0,
       'NbComment': 0,
@@ -93,9 +111,16 @@ const Tweets = () => {
     store.collection('tweets').add(tweet).then( doc => {
       indexDB = [ {...tweet, id: doc.id},...indexDB];
       setTweets(indexDB);
-      });
+
+      //Refacto
+      //Ensuite rajouter pour tous les users dont je suis abonnées
+      store.collection('feed').doc(idUser).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
+
+    });
     setNewTweet('');
     setClosed(true);
+
+
 
   } ;
 
