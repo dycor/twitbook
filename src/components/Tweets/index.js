@@ -99,6 +99,49 @@ const Tweets = () => {
 
   } ;
 
+  function addLike(tweetId){
+    store.collection('likes').doc(user.userId + "_" + tweetId).set({
+      'userId': user.userId,
+      'tweetId': tweetId,
+    });
+    let tweetRef = store.collection('tweets').doc(tweetId);
+    let tweet = tweetRef.get()
+    .then(doc => {
+        tweetRef.update({
+          NbLike: doc.data().NbLike +1
+        });
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    })
+  }
+
+function removeLike(tweetId) {
+  store.collection('likes').doc(user.userId + "_" + tweetId).delete().then(e => {
+    let tweetRef = store.collection('tweets').doc(tweetId);
+    let tweet = tweetRef.get()
+    .then(doc => {
+        tweetRef.update({
+          NbLike: doc.data().NbLike -1
+        });
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
+  })
+  .catch(err => {
+    console.log('Error getting document', err);
+  });
+}
+
+  async function isLiked(tweetId) {
+    try {
+      if (user) return await store.collection("likes").doc(user.userId + "_" + tweetId).get();
+    } catch (err) {
+      console.log('Error getting document', err);
+    }
+  }
+
   return <>
     {
       closed ? (
@@ -107,7 +150,7 @@ const Tweets = () => {
             <button onClick={fetchNewtweet} className="btn-primary">click</button>
             <button onClick={() => setClosed(false)} className="btn-primary btn-tweet">+</button>
             <ul className="tweetsList">
-              { tweets.map( tweet => <Tweet tweet={tweet} key={tweet.id}/>)}
+              { tweets.map( tweet => <Tweet tweet={tweet} nbLike={tweet.nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}/>)}
             </ul>
             { loading && !endTweet.current ? <Spinner/> : <></>}
           </>):
