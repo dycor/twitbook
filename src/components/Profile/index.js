@@ -1,6 +1,7 @@
 import React, { useContext,useState,useEffect,useRef } from 'react';
 import {AppContext} from "../App/AppProvider";
 import Spinner from "../Spinner";
+import './style.scss';
 
 const Profile = ({ match }) => {
   const { getStore,user } = useContext(AppContext);
@@ -43,15 +44,21 @@ const Profile = ({ match }) => {
   };
 
   return profile ? <>
-    <div className="ProfileHeader">
-      <img/>
-      <span>{profile.pseudo}</span>
-      <span>@{profile.username}</span>
-     { user.id !== profile.id ?<button onClick={follow} style={style}>{followed ? 'Abonné':'Suivre'}</button> : <></>}
-    </div>
-    <div>
-      <span>Tweets</span>
-      <span>J'aime</span>
+    <div className="component-profile">
+      <header>
+        <div className="profile-header">
+          <img />
+          <div className="profile-name">
+            <p className="name">{profile.pseudo}</p>
+            <p className="twitbook-tag">@{profile.username}</p>
+            { user.id !== profile.id ?<button onClick={follow} style={style} className="btn-primary twitbook-follow">{followed ? 'Ne plus suivre':'Suivre'}</button> : <></>}
+          </div>
+        </div>
+      </header>
+      <section>
+        <span>Tweets</span>
+        <span>J'aime</span>
+      </section>
     </div>
   </> : <Spinner/>
 };

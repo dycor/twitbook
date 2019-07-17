@@ -1,0 +1,52 @@
+@import 'styles/_colors.scss';
+@import 'styles/_variables.scss';
+
+div.component-profile {
+    width: 100%;
+    > header {
+        display: block;
+        height: 300px;
+        background-color: rgba($color: #000000, $alpha: 1.0);
+        position: relative;
+        width: 100%;
+        > div.profile-header {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            > img {
+                width: 8rem;
+                height: 8rem;
+                border-radius: 100%;
+                background-color: rgba($color: $primaryColor, $alpha: 1.0)
+            }
+            > div.profile-name {
+                display: flex;
+                margin-top: 1rem;
+                flex-direction: column;
+                align-items: center;
+                > p.name {
+                    font-size: 1.2rem;
+                    font-weight: 900;
+                    margin: 0;
+                }
+                > p.twitbook-tag {
+                    font-size: 1rem;
+                    margin: 0;
+                }
+                > button.twitbook-follow {
+                    border-radius: 2rem;
+                    margin-top: 1rem;
+                    padding: 0.4rem 1.3rem;
+                    font-size: 1rem;
+                    text-align: center;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
