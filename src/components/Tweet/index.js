@@ -9,7 +9,7 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
         {tweet.profilImage ? <img src={tweet.profilImage} className="profilImage" alt={'Avatar profil of ' + tweet.username}/> : ''}
       </div>
       <div className="tweet-card--profile--username">
-        <h3><Link className="username" to={`/${tweet.username}`}>{tweet.username}</Link></h3>
+        <h3><Link className="username" to={`/profile/${tweet.username}`}>{tweet.username}</Link></h3>
         <p>@{tweet.username}</p>
       </div>
     </div>
@@ -19,7 +19,7 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
     {
       tweet.imageUrl ? 
       <div className="tweet-card--media">
-        <img src={tweet.imageUrl} alt="temp alt"></img>
+        <img src={tweet.imageUrl} alt={`Media from : ` +tweet.username}></img>
       </div>
       :
       ''
