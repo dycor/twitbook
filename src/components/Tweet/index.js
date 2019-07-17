@@ -1,8 +1,6 @@
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import Like from '../Like';
-import Tweets from '../Tweets';
-import storage from 'firebase';
 
 const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
  return <li id={tweet.id}>

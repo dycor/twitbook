@@ -126,11 +126,9 @@ function removeLike(tweetId) {
         });
     })
     .catch(err => {
-      console.log('Error getting document', err);
     });
   })
   .catch(err => {
-    console.log('Error getting document', err);
   });
 }
 
@@ -138,7 +136,6 @@ function removeLike(tweetId) {
     try {
       if (user) return await store.collection("likes").doc(user.userId + "_" + tweetId).get();
     } catch (err) {
-      console.log('Error getting document', err);
     }
   }
 
