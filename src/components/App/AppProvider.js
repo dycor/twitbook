@@ -20,9 +20,12 @@ class AppProvider extends Component {
 
   state = {
     user: null,
+    followers : null
   };
 
   setUser = user => this.setState({user : user});
+
+  setFollowers = followers => this.setState({followers : followers});
 
   getFirebase = () => this.firebase;
   getStore = () => this.store;

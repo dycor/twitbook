@@ -34,7 +34,6 @@ const Profile = ({ match }) => {
       store.collection('followers').where('follower', '==', user.id).where('followed', '==', profile.id).get().then( doc => {
         setFollowed(false);
         doc.docs[0].ref.delete();
-        console.log(doc)
       });
     } else {
       store.collection('followers').add({follower: user.id , followed: profile.id}).then( doc => {

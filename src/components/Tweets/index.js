@@ -6,7 +6,6 @@ import NewTweet from '../Tweet/newTweet';
 import Spinner from '../Spinner';
 
 var indexDB ;
-const idUser = 'CS4ktupxvRaoJqESQRw6';
 
 const Tweets = () => {
 
@@ -15,7 +14,7 @@ const Tweets = () => {
   const [loadNewTweet,setLoadNewTweet] = useState(false);
   const [newTweet,setNewTweet] = useState('');
   const [closed,setClosed] = useState(true);
-  const { getStore,user } = useContext(AppContext);
+  const { getStore,user,followers } = useContext(AppContext);
   const store = getStore();
   const ref = useRef( { mounted: false });
   const endTweet = useRef( false);
@@ -25,9 +24,9 @@ const Tweets = () => {
 
 
   useEffect(() => {
-    if(!ref.current.mounted){
+    if(!ref.current.mounted && user){
       setLoading(true);
-      store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').limit(limit).get().then( allDocs => {
+      store.collection('feed').doc(user.id).collection('tweets').orderBy('createdAt','desc').limit(limit).get().then( allDocs => {
         var userTweets = [];
         Promise.all(allDocs.docs.map(doc => {
           const path = doc.data().path;
@@ -48,7 +47,7 @@ const Tweets = () => {
   const fetchNewtweet = () => {
     setLoadNewTweet(true)  ;
 
-    store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( allDocs => {
+    store.collection('feed').doc(user.id).collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( allDocs => {
       if(allDocs.docs.length){
         var userTweets = [];
         Promise.all(allDocs.docs.map(doc => {
@@ -74,7 +73,7 @@ const Tweets = () => {
 
     if (offset === height && !loading) {
       setLoading(true);
-      store.collection('feed').doc(idUser).collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet.current).limit(limit).get().then( allDocs => {
+      store.collection('feed').doc(user.id).collection('tweets').orderBy('createdAt','desc').startAfter(lastTweet.current).limit(limit).get().then( allDocs => {
         var userTweets = [];
         Promise.all(allDocs.docs.map(doc => {
           const path = doc.data().path;
@@ -114,17 +113,15 @@ const Tweets = () => {
     };
 
     store.collection('tweets').add(tweet).then( doc => {
+      followers.forEach(userId => {
+        store.collection('feed').doc(userId).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
+      });
+      store.collection('feed').doc(user.id).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
 
-      //Refacto
-      //Ensuite rajouter pour tous les users dont je suis abonnées
-      store.collection('feed').doc(idUser).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
       fetchNewtweet();
-
     });
     setNewTweet('');
     setClosed(true);
-
-
 
   } ;
 
