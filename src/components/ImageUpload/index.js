@@ -16,6 +16,9 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
     task.then((snapshot) => {
       snapshot.ref.getDownloadURL().then(function(downloadURL) {
         document.querySelector('#uploaded-img').src = downloadURL;
+        document.querySelector('#uploaded-img').alt = name;
+        document.querySelector('#uploaded-img').title = name;
+        document.querySelector('#uploaded-img').style.display = "block";
         setImageUrl(downloadURL);
         setBase64Image('nobase64now');
       });
@@ -32,9 +35,9 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
   }
   
   return <div className="component-upload-image">
+        <label for="image-upload-input">Joindre une image</label>
+        <input id="image-upload-input" name="image-upload-input" type="file" onChange={handleChange}/>
         <img id="uploaded-img" width="50%"/>
-        <label>Ajouter une image</label>
-        <input type="file" onChange={handleChange}/>
       </div>
 }
 

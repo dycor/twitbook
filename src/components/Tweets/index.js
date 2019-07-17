@@ -169,13 +169,22 @@ function removeLike(tweetId) {
     {
       closed ? (
           <>
-            { loadNewTweet ? <Spinner/> : <></>}
-            <button onClick={fetchNewtweet} className="btn-primary">click</button>
-            <button onClick={() => setClosed(false)} className="btn-primary btn-tweet">+</button>
-            <ul className="tweetsList">
+            <div className="home-content">
+              { loadNewTweet ? <Spinner/> : <></>}
+              <div className="home-content--tweetlist-options">
+              <button onClick={fetchNewtweet} className="btn-primary btn-reload" title="Charger de nouveaux Tweetbooks">Recharger</button>
+              </div>
+              <a href="#" onClick={() => setClosed(false)} className="tweetbook-add-message">
+                <div className="inner">
+                  <p className="visible-message">+</p>
+                  <p className="hidden-message">Twitbookez</p>
+                </div>
+              </a>
+              <ul className="tweetsList">
               { tweets.map( tweet => <Tweet tweet={tweet} nbLike={tweet.nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}/>)}
-            </ul>
-            { loading && !endTweet.current ? <Spinner/> : <></>}
+              </ul>
+              { loading && !endTweet.current ? <Spinner/> : <></>}
+            </div>
           </>):
         (<NewTweet newTweet={newTweet} addTweet={addTweet} setNewTweet={setNewTweet} setClosed={setClosed}/>)
     }

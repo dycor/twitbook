@@ -7,11 +7,19 @@ const NewTweet = ({newTweet , addTweet, setNewTweet, setClosed}) => {
 
 
 
-  return <div>
-    <button onClick={() => setClosed(true)} className="btn-primary">Close</button>
-    <textarea rows={5} cols={35} value={newTweet} onChange={e => setNewTweet(e.target.value)} maxLength={140}/>
-    <button onClick={() => addTweet(imageUrl, base64Image)} className="btn-primary">Tweeter</button>
-    <ImageUpload setImageUrl={setImageUrl} setBase64Image={setBase64Image}/>
+  return <div className="add-tweet-component">
+    <div className="form-container">
+      <div className="options">
+        <button onClick={() => setClosed(true)} className="btn-primary btn-twitbook-button">Retour</button>
+      </div>
+      <div className="form">
+        <textarea rows={10} cols={35} value={newTweet} onChange={e => setNewTweet(e.target.value)} maxLength={280}/>
+        <ImageUpload setImageUrl={setImageUrl} setBase64Image={setBase64Image}/>
+      </div>
+      <div className="submit">
+        <button onClick={() => addTweet(imageUrl, base64Image)} className="btn-primary">Tweeter</button>
+      </div>
+    </div>
   </div>
 }
 
