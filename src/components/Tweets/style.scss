@@ -38,14 +38,19 @@
       }
     }
     &--content {
+      display: flex;
+      justify-content: center;
       p {
+        width: 80%;
         color: $colorWhite;
         font-size: 1.8rem;
       }
     }
     &--media {
+      display: flex;
+      justify-content: center;
       img {
-        width: 100%;
+        width: 80%;
         border-radius: 1.5rem;
         border: 1px solid $secondaryColor;
       }
