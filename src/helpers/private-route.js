@@ -1,13 +1,15 @@
-import React from 'react';
+import React,{ useContext } from 'react';
 import { Route,  Redirect } from "react-router-dom";
+import {AppContext} from "../components/App/AppProvider";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const authenticate = true;
+  const { user } = useContext(AppContext);
+
   return (
     <Route
       {...rest}
       render={props =>
-        authenticate ? (
+        user ? (
           <Component {...props} />
         ) : (
           <Redirect
