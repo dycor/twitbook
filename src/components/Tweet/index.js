@@ -6,7 +6,7 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
   return <li id={tweet.id} className="tweet-card">
     <div className="tweet-card--profile">
       <div className="tweet-card--profile--avatar">
-        <img src={tweet.profilImage} className="profilImage" /*alt={'Avatar profil of ' + tweet.username}*//>
+        {tweet.profilImage ? <img src={tweet.profilImage} className="profilImage" alt={'Avatar profil of ' + tweet.username}/> : ''}
       </div>
       <div className="tweet-card--profile--username">
         <h3><Link className="username" to={`/${tweet.username}`}>{tweet.username}</Link></h3>
@@ -16,9 +16,14 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
     <div className="tweet-card--content">
       <p>{tweet.text} </p>
     </div>
-    <div className="tweet-card--media">
-      <img src={tweet.imageUrl} alt="temp alt"></img>
-    </div>
+    {
+      tweet.imageUrl ? 
+      <div className="tweet-card--media">
+        <img src={tweet.imageUrl} alt="temp alt"></img>
+      </div>
+      :
+      ''
+    }
     <div className="tweet-card--options">
       <span><img className="icon" src="http://www.logospng.com/images/66/ajax-comment-system-for-laravel-66079.png"/>{tweet.nbComment}</span>
       <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}></Like>
