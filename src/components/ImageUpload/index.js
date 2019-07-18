@@ -35,7 +35,7 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
   }
   
   return <div className="component-upload-image">
-        <label for="image-upload-input">Joindre une image</label>
+        <label htmlFor="image-upload-input">Joindre une image</label>
         <input id="image-upload-input" name="image-upload-input" type="file" onChange={handleChange}/>
         <img id="uploaded-img" width="50%"/>
       </div>
