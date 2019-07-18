@@ -16,9 +16,9 @@ const Like =  ({tweetId, nbLike, addLike, removeLike, isLiked}) => {
         isLiked(tweetId).then(doc => setLiked(doc.exists));
     }, []);
     if(liked){
-        return (<span class="like"><UnlikeIcon  onClick={clickLike}></UnlikeIcon>{nbLike ?nbLike :''}</span>)
+        return (<span className="like"><UnlikeIcon  onClick={clickLike}></UnlikeIcon>{nbLike ?nbLike :''}</span>)
     }else{
-        return (<span class="like"><LikeIcon  onClick={clickLike}></LikeIcon>{nbLike ?nbLike :''}</span>)
+        return (<span className="like"><LikeIcon  onClick={clickLike}></LikeIcon>{nbLike ?nbLike :''}</span>)
     }
 };
       
