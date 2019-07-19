@@ -1,5 +1,5 @@
-@import 'styles/_colors.scss';
-@import 'styles/_variables.scss';
+@import "styles/_colors.scss";
+@import "styles/_variables.scss";
 
 .tweetsList {
   padding: 0;
@@ -70,33 +70,37 @@
     width: 100%;
   }
   &--tweetlist-options {
-    position: relative;
-    height: 40px;
+    //position: relative;
+    //height: 40px;
+    display: flex;
+    justify-content: center;
     button.btn-reload {
-      position: absolute;
-      top: 0.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+      //position: absolute;
+      //top: 0.5rem;
+      //left: 50%;
+      //transform: translateX(-50%);
       font-size: 1.2rem;
       padding: 0.5rem;
       border-radius: 0.3rem;
       cursor: pointer;
+      margin-top: 1em;
     }
   }
 }
 
 .btn-primary {
   background-color: rgba($color: $primaryColor, $alpha: 0.9);
-  transition: background-color .3s ease;
+  transition: background-color 0.3s ease;
   &:hover {
-    background-color: rgba($color: $primaryColor, $alpha: 1.0);
+    background-color: rgba($color: $primaryColor, $alpha: 1);
   }
 }
 
 a.tweetbook-add-message {
   position: fixed;
-  bottom: 3rem; right: 3rem;
-  @media #{$responsive-medium}{
+  bottom: 3rem;
+  right: 3rem;
+  @media #{$responsive-medium} {
     bottom: 1rem;
     right: 1rem;
   }
@@ -105,7 +109,7 @@ a.tweetbook-add-message {
       > p.hidden-message {
         width: 100%;
         opacity: 1;
-        background-color: rgba($color: $primaryColor, $alpha: 1.0);
+        background-color: rgba($color: $primaryColor, $alpha: 1);
       }
     }
   }
@@ -115,13 +119,15 @@ a.tweetbook-add-message {
     border-radius: 100%;
     position: relative;
     background-color: rgba($color: $primaryColor, $alpha: 0.8);
-    margin: 0; padding: 0;
-    @media #{$responsive-medium}{
+    margin: 0;
+    padding: 0;
+    @media #{$responsive-medium} {
       width: 3.5rem;
       height: 3.5rem;
     }
     > p.visible-message {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       font-size: 2rem;
       color: $colorWhite;
       position: absolute;
@@ -129,8 +135,10 @@ a.tweetbook-add-message {
       align-items: center;
       justify-content: center;
       z-index: 10;
-      left: 0; right: 0;
-      top: 0; bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
     }
     > p.hidden-message {
       position: absolute;
@@ -148,7 +156,7 @@ a.tweetbook-add-message {
       right: 0;
       width: 0;
       opacity: 0;
-      transition: opacity .3s ease, width .3s ease, background-color .3s ease;
+      transition: opacity 0.3s ease, width 0.3s ease, background-color 0.3s ease;
     }
   }
 }

@@ -4,8 +4,7 @@ import { AppContext } from "../App/AppProvider";
 import Tweet from '../Tweet';
 import NewTweet from '../Tweet/newTweet';
 import Spinner from '../Spinner';
-
-var indexDB ;
+import { NetworkDetector } from '../NetworkDetector';
 
 const Tweets = () => {
 
@@ -14,7 +13,7 @@ const Tweets = () => {
   const [loadNewTweet,setLoadNewTweet] = useState(false);
   const [newTweet,setNewTweet] = useState('');
   const [closed,setClosed] = useState(true);
-  const { getStore,user,followers } = useContext(AppContext);
+  const { getStore,user,followers, isOffline } = useContext(AppContext);
   const store = getStore();
   const ref = useRef( { mounted: false });
   const endTweet = useRef( false);
@@ -32,8 +31,7 @@ const Tweets = () => {
           const path = doc.data().path;
           return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
         })).then(() => {
-          indexDB = userTweets;
-          setTweets(indexDB);
+          setTweets(userTweets);
           lastTweet.current = allDocs.docs[allDocs.docs.length - 1 ];
           firstTweet.current = allDocs.docs[0];
           setLoading(false);
@@ -42,28 +40,29 @@ const Tweets = () => {
 
       ref.current = { mounted: true };
     }
-  });
+  }, [store, tweets, user]);
 
   const fetchNewtweet = () => {
     setLoadNewTweet(true)  ;
 
-    store.collection('feed').doc(user.id).collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( allDocs => {
-      if(allDocs.docs.length){
-        var userTweets = [];
-        Promise.all(allDocs.docs.map(doc => {
-          const path = doc.data().path;
-          return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
-        })).then(() => {
-          indexDB = [...userTweets,...indexDB];
-          if(allDocs.docs.length) firstTweet.current =  allDocs.docs[0];
-          setTweets(indexDB);
-          setLoadNewTweet(false);
-        })
-      } else {
-        setLoadNewTweet(false);
-      }
-    });
+    if (store != null && firstTweet.current != null) {
+      store.collection('feed').doc(user.id).collection('tweets').orderBy('createdAt','desc').endBefore(firstTweet.current).limit(limit).get().then( allDocs => {
+        if(allDocs.docs.length){
+          var userTweets = [];
+          Promise.all(allDocs.docs.map(doc => {
+            const path = doc.data().path;
+            return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
+          })).then(() => {
+            if(allDocs.docs.length) firstTweet.current =  allDocs.docs[0];
+            setTweets([...userTweets,...tweets]);
+            setLoadNewTweet(false);
+          })
+        } else {
 
+        }
+      });
+    }
+    setLoadNewTweet(false);
   };
 
   window.onscroll = function() {
@@ -79,8 +78,7 @@ const Tweets = () => {
           const path = doc.data().path;
           return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
         })).then(() => {
-          indexDB = [...indexDB,...userTweets];
-          setTweets(indexDB);
+          setTweets([...tweets,...userTweets]);
 
           if(allDocs.docs.length){
             lastTweet.current = allDocs.docs[ allDocs.docs.length - 1 ];
@@ -88,14 +86,10 @@ const Tweets = () => {
             endTweet.current = true;
           }
           setLoading(false);
-
-
         })
       });
-
     }
   };
-
 
   const addTweet = (imageUrl, base64Image) => {
 
@@ -113,11 +107,12 @@ const Tweets = () => {
     };
 
     store.collection('tweets').add(tweet).then( doc => {
-      followers.forEach(userId => {
-        store.collection('feed').doc(userId).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
-      });
+      if (followers != null) {
+        followers.forEach(userId => {
+          store.collection('feed').doc(userId).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
+        });
+      }
       store.collection('feed').doc(user.id).collection('tweets').add({path :`tweets/${doc.id}`,retweet: false,createdAt});
-
       fetchNewtweet();
     });
     setNewTweet('');
@@ -177,7 +172,7 @@ const Tweets = () => {
 function removeLike(tweetId) {
   store.collection('likes').doc(user.userId + "_" + tweetId).delete().then(e => {
     let tweetRef = store.collection('tweets').doc(tweetId);
-    let tweet = tweetRef.get()
+    tweetRef.get()
     .then(doc => {
         tweetRef.update({
           NbLike: doc.data().NbLike -1
@@ -211,9 +206,17 @@ function removeLike(tweetId) {
             <div className="home-content">
               { loadNewTweet ? <Spinner/> : <></>}
               <div className="home-content--tweetlist-options">
-              <button onClick={fetchNewtweet} className="btn-primary btn-reload" title="Charger de nouveaux Tweetbooks">Recharger</button>
+                {
+                  isOffline
+                    ? (
+                      <NetworkDetector />
+                    )
+                    : (
+                      <button onClick={fetchNewtweet} className="btn-primary btn-reload" title="Charger de nouveaux Tweetbooks">Recharger</button>
+                    )
+                }
               </div>
-              <a href="#" onClick={() => setClosed(false)} className="tweetbook-add-message">
+              <a href="/#" onClick={() => setClosed(false)} className="tweetbook-add-message">
                 <div className="inner">
                   <p className="visible-message">+</p>
                   <p className="hidden-message">Twitbookez</p>
