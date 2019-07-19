@@ -1,19 +1,40 @@
 import React from 'react';
 import firebase from 'firebase';
-import image2base64 from 'image-to-base64';
+import imageCompression from 'browser-image-compression';
 
 const ImageUpload = ({setImageUrl , setBase64Image}) => {
  
-  const handleChange = e => {
-    const file = e.target.files[0];
+  const handleImageUpload = async (file) => {
     const ref = firebase.storage().ref();
     
-    const name = (+new Date()) + '-' + file.name;
+    //console.log('originalFile instanceof Blob', file instanceof Blob);
+    //console.log(`originalFile size ${file.size / 1024 / 1024} MB`);
+    const minifyOptions = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 720,
+      useWebWorker: true
+    }
+    try {
+      const compressedFile = await imageCompression(file, minifyOptions);
+      //console.log('compressedFile instanceof Blob', compressedFile instanceof Blob);
+      //console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`);
+      return compressedFile;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChange = async (e) => {
+    const file = e.target.files[0];
+    const minifiedFile = await handleImageUpload(file);
+    
+    const ref = firebase.storage().ref();
+    
+    const name = (+new Date()) + '-' + minifiedFile.name;
     const dirFolder = 'tweets/';
     const path = dirFolder + name;
     
-    const task = ref.child(path).put(file);
-
+    const task = ref.child(path).put(minifiedFile);
     task.then((snapshot) => {
       snapshot.ref.getDownloadURL().then(function(downloadURL) {
         document.querySelector('#uploaded-img').src = downloadURL;
@@ -24,7 +45,7 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
         let reader = new FileReader();
         let base64 = '';
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(minifiedFile);
         reader.onload = function () {
           base64 = reader.result;
           setBase64Image(base64);
@@ -32,8 +53,6 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
         reader.onerror = function (error) {
           console.log('Error: ', error);
         };
-
-        console.log('base : ', base64);
 
         setImageUrl(downloadURL);
       });
