@@ -1,8 +1,10 @@
 import {Link} from "react-router-dom";
 import React, {useState} from "react";
 import Like from '../Like';
+import Retweet from '../Retweet';
+import { ReactComponent as ChatIcon } from '../../static/icons/chat.svg'
 
-const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
+const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike, retweet, unretweet, isRetweeted}) => {
   return <li id={tweet.id} className="tweet-card">
     <div className="tweet-card--profile">
       <div className="tweet-card--profile--avatar">
@@ -25,9 +27,9 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
       ''
     }
     <div className="tweet-card--options">
-      <span><img className="icon" src="http://www.logospng.com/images/66/ajax-comment-system-for-laravel-66079.png"/>{tweet.nbComment}</span>
-      <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}></Like>
-      <span><img className="icon" src="https://www.nicepng.com/png/detail/24-241083_twitter-retweet-png.png"/>{tweet.nbRetweet}</span>
+      <span class="like"><ChatIcon></ChatIcon>{tweet.nbComment}</span>
+      <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}>{tweet.nbLike}</Like>
+      <Retweet retweet={retweet} unretweet={unretweet} isRetweeted={isRetweeted} tweetId={tweet.id}>{tweet.nbRetweet}</Retweet>
     </div>
   </li>;
 }

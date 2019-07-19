@@ -1,5 +1,4 @@
 import React,{ useEffect, useState }  from 'react';
-import {Link} from "react-router-dom";
 import { ReactComponent as LikeIcon } from '../../static/icons/like.svg'
 import { ReactComponent as UnlikeIcon } from '../../static/icons/unlike.svg'
 
