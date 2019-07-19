@@ -1,8 +1,9 @@
 import React from 'react';
 import firebase from 'firebase';
+import image2base64 from 'image-to-base64';
 
 const ImageUpload = ({setImageUrl , setBase64Image}) => {
-
+ 
   const handleChange = e => {
     const file = e.target.files[0];
     const ref = firebase.storage().ref();
@@ -19,8 +20,22 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
         document.querySelector('#uploaded-img').alt = name;
         document.querySelector('#uploaded-img').title = name;
         document.querySelector('#uploaded-img').style.display = "block";
+
+        let reader = new FileReader();
+        let base64 = '';
+
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          base64 = reader.result;
+          setBase64Image(base64);
+        };
+        reader.onerror = function (error) {
+          console.log('Error: ', error);
+        };
+
+        console.log('base : ', base64);
+
         setImageUrl(downloadURL);
-        setBase64Image('nobase64now');
       });
     })/*.catch((error) => {
       switch (error.code) {
