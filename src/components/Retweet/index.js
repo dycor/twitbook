@@ -4,6 +4,7 @@ import { ReactComponent as UnRetweetIcon } from '../../static/icons/unretweet.sv
 
 
 const Retweet =  ({tweetId, nbTweet, retweet, unretweet, isRetweeted}) => {
+    var count = 0;
     const [retweeted, setRetweeted]= useState(false);
     const clickRetweet = () => {
         retweeted?unretweet(tweetId):retweet(tweetId);
@@ -11,6 +12,7 @@ const Retweet =  ({tweetId, nbTweet, retweet, unretweet, isRetweeted}) => {
     }
 
     useEffect(() => {
+        console.log(tweetId);
         isRetweeted(tweetId).then(doc => setRetweeted(doc.exists));
     }, []);
     if(retweeted){

@@ -16,12 +16,18 @@ class AppProvider extends Component {
       this.firebase = firebase.initializeApp(config);
       this.store = firebase.firestore();
     }
+    const user = localStorage.getItem('user');
+    const followers = localStorage.getItem('followers');
+
+
+
+    this.state = {
+      user: user?JSON.parse(user):null,
+      followers : followers?JSON.parse(user):null
+    };
   }
 
-  state = {
-    user: null,
-    followers : null
-  };
+ 
 
   setUser = user => this.setState({user : user});
 
@@ -30,11 +36,7 @@ class AppProvider extends Component {
   getFirebase = () => this.firebase;
   getStore = () => this.store;
 
-  componentDidMount(){
-    const user = localStorage.getItem('user');
-    if(user) this.setState({user : JSON.parse(user)});
 
-  }
 
   render() {
     return (
