@@ -28,15 +28,47 @@ const Profile = ({ match }) => {
 
     }
   });
-
   const follow = () => {
     if(followed) {
       store.collection('followers').where('follower', '==', user.id).where('followed', '==', profile.id).get().then( doc => {
         setFollowed(false);
         doc.docs[0].ref.delete();
+
+        const followerRef = store.collection('users').doc(user.id);
+        followerRef.get()
+          .then(doc => {
+            followerRef.update({
+              nbFolloweds: doc.data().nbFolloweds -1
+            });
+          });
+
+        const followedRef = store.collection('users').doc(profile.id);
+        followedRef.get()
+          .then(doc => {
+
+            followedRef.update({
+              nbFollowers: doc.data().nbFollowers -1
+            }).then(() => setProfile({...profile , nbFollowers : profile.nbFollowers - 1}));
+          });
       });
     } else {
       store.collection('followers').add({follower: user.id , followed: profile.id}).then( doc => {
+        const followerRef = store.collection('users').doc(user.id);
+        followerRef.get()
+          .then(doc => {
+            followerRef.update({
+              nbFolloweds: doc.data().nbFolloweds + 1
+            });
+          });
+
+        const followedRef = store.collection('users').doc(profile.id);
+        followedRef.get()
+          .then(doc => {
+
+            followedRef.update({
+              nbFollowers: doc.data().nbFollowers + 1
+            }).then(() => setProfile({...profile , nbFollowers : profile.nbFollowers + 1}));
+          });
         setFollowed(true);
       });
     }
@@ -50,6 +82,10 @@ const Profile = ({ match }) => {
           <div className="profile-name">
             <p className="name">{profile.pseudo}</p>
             <p className="twitbook-tag">@{profile.username}</p>
+            <div className="follow-section">
+              <span>{profile.nbFolloweds} abonnements</span>
+              <span>{profile.nbFollowers} abonnés</span>
+            </div>
             { user.id !== profile.id ?<button onClick={follow} style={style} className="btn-primary twitbook-follow">{followed ? 'Ne plus suivre':'Suivre'}</button> : <></>}
           </div>
         </div>
