@@ -19,6 +19,7 @@ const Retweet =  ({tweetId, retweet, nbRetweet, unretweet, isRetweeted}) => {
         return (<span class="like"><UnRetweetIcon  onClick={clickRetweet}></UnRetweetIcon><div ClassName="counter">{NbRetweet ?NbRetweet :''}</div></span>)
     }else{
         return (<span class="like"><RetweetIcon  onClick={clickRetweet}></RetweetIcon><div ClassName="counter">{NbRetweet ?NbRetweet :''}</div></span>)
+
     }
 };
 

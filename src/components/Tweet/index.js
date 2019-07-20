@@ -32,6 +32,6 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, NbLike, NbRetweet, re
       <Retweet  nbRetweet={NbRetweet}  retweet={retweet} unretweet={unretweet} isRetweeted={isRetweeted} tweetId={tweet.id}></Retweet>
     </div>
   </li>;
-}
+};
 
 export default Tweet;

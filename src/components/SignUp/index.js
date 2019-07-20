@@ -36,7 +36,6 @@ const SignUp = props => {
             'username': username,
             'userId': uuid()
           }).then(user => {
-            console.log(user)
             db.collection('feed').doc(user.id).collection('tweets');
           });
 
