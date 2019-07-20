@@ -223,7 +223,19 @@ function removeLike(tweetId) {
                 </div>
               </a>
               <ul className="tweetsList">
-              { tweets.map( tweet => <Tweet tweet={tweet} nbLike={tweet.nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked} retweet={retweet} unretweet={unRetweet} isRetweeted={isRetweeted}/>)}
+              { tweets.map( tweet => <Tweet
+                                            tweet={tweet}
+                                            nbLike={tweet.nbLike}
+                                            tweetId={tweet.id}
+                                            addLike={addLike}
+                                            user={user}
+                                            removeLike={removeLike}
+                                            isLiked={isLiked}
+                                            retweet={retweet}
+                                            unretweet={unRetweet}
+                                            isRetweeted={isRetweeted} key={tweet.id} />
+                                            )
+              }
               </ul>
               { loading && !endTweet.current ? <Spinner/> : <></>}
             </div>
