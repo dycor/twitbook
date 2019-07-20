@@ -143,6 +143,7 @@ const Tweets = () => {
         });
     })
     .catch(err => {
+      console.error(err)
     })
   }
 
@@ -168,6 +169,7 @@ const Tweets = () => {
       }
     })
     .catch(err => {
+      console.error(err)
     })
   }
 
@@ -184,6 +186,7 @@ const Tweets = () => {
         });
     })
     .catch(err => {
+      console.error(err)
     })
   }
 
@@ -200,9 +203,11 @@ function removeLike(tweetId) {
       }
     })
     .catch(err => {
+      console.error(err)
     });
   })
   .catch(err => {
+    console.error(err)
   });
 }
 
@@ -210,6 +215,7 @@ function removeLike(tweetId) {
     try {
       if (user) return await store.collection("likes").doc(user.userId + "_" + tweetId).get();
     } catch (err) {
+      console.error(err)
     }
   }
 
@@ -217,6 +223,7 @@ function removeLike(tweetId) {
     try {
       if (user) return await store.collection("retweets").doc(user.userId + "_" + tweetId).get();
     } catch (err) {
+      console.error(err)
     }
   }
 
