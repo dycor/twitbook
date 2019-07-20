@@ -16,9 +16,9 @@ const Retweet =  ({tweetId, retweet, nbRetweet, unretweet, isRetweeted}) => {
         isRetweeted(tweetId).then(doc => setRetweeted(doc.exists));
     }, []);
     if(retweeted){
-        return (<span class="like"><UnRetweetIcon  onClick={clickRetweet}></UnRetweetIcon><div ClassName="counter">{NbRetweet ?NbRetweet :''}</div></span>)
+        return (<span class="like"><UnRetweetIcon  onClick={clickRetweet}></UnRetweetIcon><div className="counter">{NbRetweet ?NbRetweet :''}</div></span>)
     }else{
-        return (<span class="like"><RetweetIcon  onClick={clickRetweet}></RetweetIcon><div ClassName="counter">{NbRetweet ?NbRetweet :''}</div></span>)
+        return (<span class="like"><RetweetIcon  onClick={clickRetweet}></RetweetIcon><div className="counter">{NbRetweet ?NbRetweet :''}</div></span>)
 
     }
 };

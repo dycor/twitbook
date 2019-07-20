@@ -18,9 +18,9 @@ const Like =  ({tweetId, nbLike, addLike, removeLike, isLiked}) => {
 
     }, []);
     if(liked){
-        return (<span class="like"><UnlikeIcon  onClick={clickLike}></UnlikeIcon><div ClassName="counter">{NbLike ?NbLike :''}</div></span>)
+        return (<span class="like"><UnlikeIcon  onClick={clickLike}></UnlikeIcon><div className="counter">{NbLike ?NbLike :''}</div></span>)
     }else{
-        return (<span class="like"><LikeIcon  onClick={clickLike}></LikeIcon><div ClassName="counter">{NbLike ?NbLike :''}</div></span>)
+        return (<span class="like"><LikeIcon  onClick={clickLike}></LikeIcon><div className="counter">{NbLike ?NbLike :''}</div></span>)
     }
 };
       
