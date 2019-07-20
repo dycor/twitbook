@@ -34,7 +34,7 @@ class AppProvider extends Component {
 
     this.state = {
       user: user ? JSON.parse(user) : null,
-      followers : followers ? JSON.parse(followers) : null,
+      followers : followers ? JSON.parse(followers) : [],
       isOffline: false
     };
   }
