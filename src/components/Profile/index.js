@@ -22,7 +22,6 @@ const Profile = ({ match }) => {
       if(profile && user ){
         store.collection('followers').where('follower', '==', user.id).where('followed', '==', profile.id).get().then( doc => {
           if(doc.docs.length) setFollowed(true);
-          console.log(doc)
           ref.current = { mounted: true };
         });
       }

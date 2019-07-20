@@ -20,27 +20,30 @@ class AppProvider extends Component {
           // Multiple tabs open, persistence can only be enabled
           // in one tab at a a time.
           // ...
-          console.log(err);
+          console.error(err);
         } else if (err.code === "unimplemented") {
           // The current browser does not support all of the
           // features required to enable persistence
           // ...
-          console.log(err);
+          console.error(err);
         }
       });
     }
     const user = localStorage.getItem('user');
     const followers = localStorage.getItem('followers');
 
-
-
     this.state = {
-      user: user?JSON.parse(user):null,
-      followers : followers?JSON.parse(user):null,
+      user: user ? JSON.parse(user) : null,
+      followers : followers ? JSON.parse(followers) : null,
       isOffline: false
     };
   }
 
+  state = {
+    user: this.user ? JSON.parse(this.user) : null,
+    followers: this.followers ? JSON.parse(this.followers) : null,
+    isOffline: false
+  };
 
   setUser = user => this.setState({ user: user });
 

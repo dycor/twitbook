@@ -27,11 +27,11 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike, retweet, unre
       ''
     }
     <div className="tweet-card--options">
-      <span class="like"><ChatIcon></ChatIcon>{tweet.nbComment}</span>
+      <span className="like"><ChatIcon></ChatIcon>{tweet.nbComment}</span>
       <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}>{tweet.nbLike}</Like>
       <Retweet retweet={retweet} unretweet={unretweet} isRetweeted={isRetweeted} tweetId={tweet.id}>{tweet.nbRetweet}</Retweet>
     </div>
   </li>;
-}
+};
 
 export default Tweet;

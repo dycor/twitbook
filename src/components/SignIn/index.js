@@ -4,7 +4,7 @@ import {AppContext} from "../App/AppProvider";
 
 const SignIn  = props => {
 
-    const { getFirebase,getStore,setFollowers } = useContext(AppContext);
+    const { getFirebase,getStore,setFollowers,setUser } = useContext(AppContext);
     const firebase = getFirebase();
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
@@ -21,10 +21,13 @@ const SignIn  = props => {
               .then(response => {
                   db.collection('users').where('email', '==', email).get()
                     .then(response => {
-                      const user = response.docs[0];
-                      localStorage.setItem('user', JSON.stringify({id:user.id,...user.data()}));
-                      console.log(user.id);
-                      db.collection('followers').where('followed', '==', user.id).get().then(res => {
+                      const userDoc = response.docs[0];
+                      const user = JSON.stringify({id:userDoc.id,...userDoc.data()});
+
+                      localStorage.setItem('user',user );
+                      setUser(JSON.parse(user));
+
+                      db.collection('followers').where('followed', '==', userDoc.id).get().then(res => {
                         const followers = res.docs.map( follower => follower.data().follower);
                         setFollowers(followers);
                       });

@@ -8,7 +8,6 @@ import { ReactComponent as Search } from '../../static/icons/search.svg'
 
 const NavBar = () => {
   const [active,setActive] = useState('home');
-  console.log(active)
 
   return  (
       <>
