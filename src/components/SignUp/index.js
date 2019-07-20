@@ -34,6 +34,8 @@ const SignUp = props => {
             'email': email,
             'pseudo': pseudo,
             'username': username,
+            'nbFollowers': 0,
+            'nbFolloweds': 0,
             'userId': uuid()
           }).then(user => {
             db.collection('feed').doc(user.id).collection('tweets');

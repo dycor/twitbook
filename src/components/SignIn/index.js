@@ -1,6 +1,7 @@
 import React, {useContext,useState} from 'react';
 import 'firebase/auth';
-import {AppContext} from "../App/AppProvider";
+import { AppContext } from "../App/AppProvider";
+import { Link } from "react-router-dom";
 
 const SignIn  = props => {
 
@@ -51,11 +52,11 @@ const SignIn  = props => {
               </label>
 
               <label>
-                  <span>Password:</span>
+                  <span>Mot de passe:</span>
                   <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="password" />
               </label>
           </div>
-
+          <span>Vous n'avez pas de compte ? <Link to="signup">Cliquez ici</Link></span>
           <input type="submit" value="Se connecter" className="submit" />
       </form>
     );
