@@ -212,3 +212,14 @@ a.tweetbook-add-message {
     }
   }
 }
+
+.like{
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+}
+
+.counter{
+  padding-left: 5px;
+}

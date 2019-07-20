@@ -136,6 +136,14 @@ const Tweets = () => {
       })
       fetchNewtweet();
     });
+    let tweetRef = store.collection('tweets').doc(tweetId);
+    tweetRef.get().then(doc => {
+        tweetRef.update({
+          NbRetweet: doc.data().NbRetweet +1
+        });
+    })
+    .catch(err => {
+    })
   }
 
   function unRetweet(tweetId){
@@ -151,6 +159,16 @@ const Tweets = () => {
       })
       fetchNewtweet();
     });
+    let tweetRef = store.collection('tweets').doc(tweetId);
+    tweetRef.get().then(doc => {
+      if(doc.data().NbRetweet > 0){
+        tweetRef.update({
+          NbRetweet: doc.data().NbRetweet -1
+        });
+      }
+    })
+    .catch(err => {
+    })
   }
 
   function addLike(tweetId){
@@ -169,14 +187,17 @@ const Tweets = () => {
     })
   }
 
+
 function removeLike(tweetId) {
   store.collection('likes').doc(user.userId + "_" + tweetId).delete().then(e => {
     let tweetRef = store.collection('tweets').doc(tweetId);
-    tweetRef.get()
-    .then(doc => {
+    let tweet = tweetRef.get();
+    tweet.then(doc => {
+      if(doc.data().NbLike > 0){
         tweetRef.update({
           NbLike: doc.data().NbLike -1
         });
+      }
     })
     .catch(err => {
     });
@@ -223,7 +244,7 @@ function removeLike(tweetId) {
                 </div>
               </a>
               <ul className="tweetsList">
-              { tweets.map( tweet => <Tweet tweet={tweet} nbLike={tweet.nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked} retweet={retweet} unretweet={unRetweet} isRetweeted={isRetweeted}/>)}
+              { tweets.map( tweet => <Tweet tweet={tweet} NbLike={tweet.NbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked} NbRetweet={tweet.NbRetweet} retweet={retweet} unretweet={unRetweet} isRetweeted={isRetweeted}/>)}
               </ul>
               { loading && !endTweet.current ? <Spinner/> : <></>}
             </div>
