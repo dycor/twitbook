@@ -4,7 +4,7 @@ import Like from '../Like';
 import Retweet from '../Retweet';
 import { ReactComponent as ChatIcon } from '../../static/icons/chat.svg'
 
-const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike, retweet, unretweet, isRetweeted}) => {
+const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
   return <li id={tweet.id} className="tweet-card">
     <div className="tweet-card--profile">
       <div className="tweet-card--profile--avatar">
@@ -29,7 +29,7 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike, retweet, unre
     <div className="tweet-card--options">
       <span className="like"><ChatIcon></ChatIcon>{tweet.nbComment}</span>
       <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}>{tweet.nbLike}</Like>
-      <Retweet retweet={retweet} unretweet={unretweet} isRetweeted={isRetweeted} tweetId={tweet.id} nbRetweet={tweet.nbRetweet}/>
+      <Retweet tweetId={tweet.id} nbRetweet={tweet.nbRetweet}/>
     </div>
   </li>;
 };

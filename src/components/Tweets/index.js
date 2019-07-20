@@ -192,7 +192,6 @@ const Tweets = () => {
                                             user={user}
                                             removeLike={removeLike}
                                             isLiked={isLiked}
-                                            retweet={retweet}
                                             key={tweet.id} />
                                             )
               }

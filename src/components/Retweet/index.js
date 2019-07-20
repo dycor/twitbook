@@ -4,7 +4,7 @@ import { ReactComponent as UnRetweetIcon } from '../../static/icons/unretweet.sv
 import {AppContext} from "../App/AppProvider";
 
 
-const Retweet =  ({tweetId, nbRetweet, retnnweet, unretwneet, isRetweetedN}) => {
+const Retweet =  ({tweetId, nbRetweet}) => {
     const { getStore, user, followers } = useContext(AppContext);
     const store = getStore();
 
