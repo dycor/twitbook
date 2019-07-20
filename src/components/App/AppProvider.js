@@ -39,12 +39,6 @@ class AppProvider extends Component {
     };
   }
 
-  state = {
-    user: this.user ? JSON.parse(this.user) : null,
-    followers: this.followers ? JSON.parse(this.followers) : null,
-    isOffline: false
-  };
-
   setUser = user => this.setState({ user: user });
 
   setFollowers = followers => this.setState({ followers: followers });
