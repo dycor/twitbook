@@ -1,24 +1,65 @@
-import React,{ useEffect, useState }  from 'react';
+import React,{ useEffect, useState, useContext }  from 'react';
 import { ReactComponent as LikeIcon } from '../../static/icons/like.svg'
 import { ReactComponent as UnlikeIcon } from '../../static/icons/unlike.svg'
+import {AppContext} from "../App/AppProvider";
 
 
 
-const Like =  ({tweetId, nbLike, addLike, removeLike, isLiked}) => {
+const Like =  ({tweetId, nbLike}) => {
+    const { getStore, user } = useContext(AppContext);
+    const store = getStore();
     const [liked, setLiked]= useState(false);
-    const clickLike = () => {
-        liked?removeLike(tweetId):addLike(tweetId);
-        setLiked(!liked);
-    }
+    const [countLike, setCountlike]= useState(nbLike);
+
 
     useEffect(() => {
         isLiked(tweetId).then(doc => setLiked(doc.exists));
     }, []);
-    if(liked){
-        return (<span className="like"><UnlikeIcon  onClick={clickLike}></UnlikeIcon>{nbLike ?nbLike :''}</span>)
-    }else{
-        return (<span className="like"><LikeIcon  onClick={clickLike}></LikeIcon>{nbLike ?nbLike :''}</span>)
-    }
+
+    const addLike = tweetId => {
+        store.collection('likes').doc(user.userId + "_" + tweetId).set({
+            'userId': user.userId,
+            'tweetId': tweetId,
+        });
+        let tweetRef = store.collection('tweets').doc(tweetId);
+        tweetRef.get()
+          .then(doc => {
+              tweetRef.update({
+                  NbLike: doc.data().NbLike +1
+              }).then(() => setCountlike(countLike + 1));
+          });
+    };
+
+    const removeLike = tweetId => {
+        store.collection('likes').doc(user.userId + "_" + tweetId).delete().then(e => {
+            let tweetRef = store.collection('tweets').doc(tweetId);
+            tweetRef.get()
+              .then(doc => {
+                  tweetRef.update({
+                      NbLike: doc.data().NbLike -1
+                  }).then(() => setCountlike(countLike - 1));
+              });
+        });
+    };
+
+    const isLiked = async tweetId => {
+        try {
+            if (user) return await store.collection("likes").doc(user.userId + "_" + tweetId).get();
+        } catch (err) {
+        }
+    };
+
+    const clickLike = () => {
+        liked ? removeLike(tweetId) : addLike(tweetId);
+        setLiked(!liked);
+    };
+
+
+    return liked ?
+      <span className="like"><UnlikeIcon  onClick={clickLike}></UnlikeIcon>{countLike ?countLike :''}</span>
+    :
+      <span className="like"><LikeIcon  onClick={clickLike}></LikeIcon>{countLike ?countLike :''}</span>
+
 };
       
 export default Like;

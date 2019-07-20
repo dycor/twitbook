@@ -120,85 +120,6 @@ const Tweets = () => {
 
   };
 
-  function retweet(tweetId){
-    const createdAt =  Date.now();
-    store.collection('retweets').doc(user.userId + "_" + tweetId).set({
-      'userId': user.userId,
-      'tweetId': tweetId,
-    }).then( doc =>{
-      followers.forEach(userId => {
-        store.collection('feed').doc(userId).collection('tweets').add({path :`tweets/${tweetId}`,retweet: true,createdAt});
-      });
-      store.collection('feed').doc(user.id).collection('tweets').where('path', '==', 'tweets/'+tweetId).get().then(res => {
-        res.forEach(doc => {
-          store.collection('feed').doc(user.id).collection('tweets').doc(doc.id).update({retweet: true});
-        });
-      })
-      fetchNewtweet();
-    });
-  }
-
-  function unRetweet(tweetId){
-    const createdAt =  Date.now();
-    store.collection('retweets').doc(user.userId + "_" + tweetId).delete().then( doc =>{
-      followers.forEach(userId => {
-        store.collection('feed').doc(userId).collection('tweets').add({path :`tweets/${tweetId}`,retweet: false,createdAt});
-      });
-      store.collection('feed').doc(user.id).collection('tweets').where('path', '==', 'tweets/'+tweetId).get().then(res => {
-        res.forEach(doc => {
-          store.collection('feed').doc(user.id).collection('tweets').doc(doc.id).update({retweet: false});
-        });
-      })
-      fetchNewtweet();
-    });
-  }
-
-  function addLike(tweetId){
-    store.collection('likes').doc(user.userId + "_" + tweetId).set({
-      'userId': user.userId,
-      'tweetId': tweetId,
-    });
-    let tweetRef = store.collection('tweets').doc(tweetId);
-    tweetRef.get()
-    .then(doc => {
-        tweetRef.update({
-          NbLike: doc.data().NbLike +1
-        });
-    })
-    .catch(err => {
-    })
-  }
-
-function removeLike(tweetId) {
-  store.collection('likes').doc(user.userId + "_" + tweetId).delete().then(e => {
-    let tweetRef = store.collection('tweets').doc(tweetId);
-    tweetRef.get()
-    .then(doc => {
-        tweetRef.update({
-          NbLike: doc.data().NbLike -1
-        });
-    })
-    .catch(err => {
-    });
-  })
-  .catch(err => {
-  });
-}
-
-  async function isLiked(tweetId) {
-    try {
-      if (user) return await store.collection("likes").doc(user.userId + "_" + tweetId).get();
-    } catch (err) {
-    }
-  }
-
-  async function isRetweeted(tweetId) {
-    try {
-      if (user) return await store.collection("retweets").doc(user.userId + "_" + tweetId).get();
-    } catch (err) {
-    }
-  }
-
   return <>
     {
       closed ? (
@@ -225,15 +146,7 @@ function removeLike(tweetId) {
               <ul className="tweetsList">
               { tweets.map( tweet => <Tweet
                                             tweet={tweet}
-                                            nbLike={tweet.nbLike}
-                                            tweetId={tweet.id}
-                                            addLike={addLike}
-                                            user={user}
-                                            removeLike={removeLike}
-                                            isLiked={isLiked}
-                                            retweet={retweet}
-                                            unretweet={unRetweet}
-                                            isRetweeted={isRetweeted} key={tweet.id} />
+                                            key={tweet.id} />
                                             )
               }
               </ul>
