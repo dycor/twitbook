@@ -1,10 +1,10 @@
 import {Link} from "react-router-dom";
-import React, {useState} from "react";
+import React from "react";
 import Like from '../Like';
 import Retweet from '../Retweet';
 import { ReactComponent as ChatIcon } from '../../static/icons/chat.svg'
 
-const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
+const Tweet = ({tweet}) => {
   return <li id={tweet.id} className="tweet-card">
     <div className="tweet-card--profile">
       <div className="tweet-card--profile--avatar">
@@ -28,8 +28,8 @@ const Tweet = ({tweet, addLike, removeLike, isLiked, user, nbLike}) => {
     }
     <div className="tweet-card--options">
       <span className="like"><ChatIcon></ChatIcon>{tweet.nbComment}</span>
-      <Like nbLike={nbLike} tweetId={tweet.id} addLike={addLike} user={user} removeLike={removeLike} isLiked={isLiked}>{tweet.nbLike}</Like>
-      <Retweet tweetId={tweet.id} nbRetweet={tweet.nbRetweet}/>
+      <Like nbLike={tweet.NbLike} tweetId={tweet.id} />
+      <Retweet tweetId={tweet.id} nbRetweet={tweet.NbRetweet}/>
     </div>
   </li>;
 };
