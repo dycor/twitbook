@@ -44,9 +44,9 @@ const Search = () => {
     <h1>Search</h1>
     <div>
       <input value={searchTerm} type="text" onChange={e => setSearchTerm(e.target.value)}/>
-      <button onClick={submitSearch}>🔍</button>
+      <button onClick={submitSearch}><span role="img" aria-label="search">🔍</span></button>
     </div>
-    <div className="bar">
+    <div className="menu">
       <span className={displayTweets ? 'active' : '' } onClick={() => setDisplayTweets(true)}> Tweets</span>
       <span className={!displayTweets ? 'active' : '' } onClick={() => setDisplayTweets(false)}> Utilisateurs</span>
     </div>
