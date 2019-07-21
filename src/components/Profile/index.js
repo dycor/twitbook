@@ -2,11 +2,16 @@ import React, { useContext,useState,useEffect,useRef } from 'react';
 import {AppContext} from "../App/AppProvider";
 import Spinner from "../Spinner";
 import './style.scss';
+import Tweets from "../Tweets";
+import Tweet from "../Tweet";
 
 const Profile = ({ match }) => {
   const { getStore,user } = useContext(AppContext);
   const [followed,setFollowed] = useState(false);
+  const [loading,setLoading] = useState(false);
   const [profile,setProfile] = useState('');
+  const [displayTweets,setDisplayTweets] = useState(true);
+  const [tweetsLiked,setTweetsLiked] = useState([]);
   const store = getStore();
   const ref = useRef( { mounted: false });
   const style = {color:'white'};
@@ -74,11 +79,31 @@ const Profile = ({ match }) => {
     }
   };
 
+  const fetchTweetLiked = () => {
+    setDisplayTweets(false);
+    setLoading(true);
+    store.collection('likes').where('userId', '==', profile.userId).get().then( doc => {
+      if(doc.docs.length){
+        var userTweets = [];
+        Promise.all(doc.docs.map(docLike => {
+          const path = 'tweets/'+docLike.data().tweetId;
+          return store.doc(path).get().then( tweet => userTweets.push({...tweet.data(), id: tweet.id}));
+        })).then(() => {
+          setTweetsLiked(userTweets);
+          setLoading(false);
+        })
+      } else {
+        setLoading(false);
+      }
+    });
+  };
+
+
   return profile ? <>
     <div className="component-profile">
       <header>
         <div className="profile-header">
-          <img />
+          {profile.image ? <img src={profile.image}/> : <img />}
           <div className="profile-name">
             <p className="name">{profile.pseudo}</p>
             <p className="twitbook-tag">@{profile.username}</p>
@@ -90,10 +115,15 @@ const Profile = ({ match }) => {
           </div>
         </div>
       </header>
-      <section>
-        <span>Tweets</span>
-        <span>J'aime</span>
+      <section className="bar">
+        <span className={displayTweets ? 'active' : '' } onClick={() => setDisplayTweets(true)}>Tweets</span>
+        <span className={!displayTweets ? 'active' : '' } onClick={() => fetchTweetLiked()}>J'aime</span>
       </section>
+      {loading ? <Spinner/> :<></>}
+      {displayTweets ?
+        <Tweets profile={profile}/>
+        : <ul className="tweetsList">{tweetsLiked.map(tweet => <Tweet tweet={tweet} key={Math.random()} />) }</ul>
+      }
     </div>
   </> : <Spinner/>
 };

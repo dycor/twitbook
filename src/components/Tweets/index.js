@@ -6,14 +6,15 @@ import NewTweet from '../Tweet/newTweet';
 import Spinner from '../Spinner';
 import { NetworkDetector } from '../NetworkDetector';
 
-const Tweets = () => {
+const Tweets = ({profile}) => {
 
   const [tweets,setTweets] = useState([]);
   const [loading,setLoading] = useState(false);
   const [loadNewTweet,setLoadNewTweet] = useState(false);
   const [newTweet,setNewTweet] = useState('');
   const [closed,setClosed] = useState(true);
-  const { getStore,user,followers, isOffline } = useContext(AppContext);
+  const { getStore, followers, isOffline } = useContext(AppContext);
+  var { user } = useContext(AppContext);
   const store = getStore();
   const ref = useRef( { mounted: false });
   const endTweet = useRef( false);
@@ -21,6 +22,7 @@ const Tweets = () => {
   const firstTweet = useRef( '');
   const limit = 50;
 
+  if(profile) user = profile;
 
   useEffect(() => {
     if(!ref.current.mounted && user){
