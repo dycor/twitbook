@@ -23,8 +23,6 @@ const Search = () => {
           return {...tweet.data(), id: tweet.id};
         });
         setTweets(tweetsRes);
-        console.log(tweetsRes)
-        console.log(searchTerm)
       }),
       store.collection('users')
         .where('username', '==',searchTerm )
@@ -33,7 +31,6 @@ const Search = () => {
           return {...user.data(), id: user.id};
         });
         setUsers(usersRes);
-        console.log(usersRes);
       })
     ]);
     setLoading(false);
@@ -62,10 +59,18 @@ const Search = () => {
               :
               <ul className="usersList">
               {users.map(user =>
-                  <div>
-                    {JSON.stringify(user)}
+                  <div key={Math.random()}>
+                    <div className="user-card">
+                      <img/>
+                      <span>{user.pseudo}</span>
+                      <span>{user.username}</span>
+                      <span>{user.nbFolloweds}</span>
+                      <span>{user.nbFollowers}</span>
+                    </div>
+
                   </div>)
               }
+
             </ul>
           }
 

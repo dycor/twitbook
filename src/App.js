@@ -10,8 +10,12 @@ function App() {
     <div className="App">
       <AppProvider >
         <BrowserRouter>
-          <NavBar/>
-          <Router/>
+          <header>
+            <NavBar/>
+          </header>
+          <main>
+            <Router/>
+          </main>
         </BrowserRouter>
       </AppProvider>
     </div>
