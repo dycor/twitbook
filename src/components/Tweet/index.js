@@ -5,7 +5,7 @@ import Retweet from '../Retweet';
 import { ReactComponent as ChatIcon } from '../../static/icons/chat.svg'
 
 const Tweet = ({tweet}) => {
-  return <li id={tweet.id} className="tweet-card">
+  return <div id={tweet.id} className="tweet-card">
     <div className="tweet-card--profile">
       <div className="tweet-card--profile--avatar">
         {tweet.profilImage ? <img src={tweet.profilImage} className="profilImage" alt={'Avatar profil of ' + tweet.username}/> : ''}
@@ -31,7 +31,7 @@ const Tweet = ({tweet}) => {
       <Like nbLike={tweet.NbLike} tweetId={tweet.id} />
       <Retweet tweetId={tweet.id} nbRetweet={tweet.NbRetweet}/>
     </div>
-  </li>;
+  </div>;
 };
 
 export default Tweet;
