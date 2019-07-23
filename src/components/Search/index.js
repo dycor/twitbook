@@ -71,7 +71,7 @@ const Search = () => {
                           <span>@{user.username}</span>
                         </div>
                         <div className="follow">
-                          <span>{user.nbFolloweds} Followeds</span>
+                          <span>{user.nbFolloweds} Followed</span>
                           <span>{user.nbFollowers} Followers</span>
                         </div>
                       </div>
