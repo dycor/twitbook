@@ -13,7 +13,7 @@ const Logout = () => {
   };
   return ( 
     <li className='li-navbar'>
-      <a href="#" onClick={() => onClick()}>
+      <a href="#" onClick={() => onClick()} aria-label="Logout">
         <LogoutIcone className='icon'/>
         <p>Logout</p> 
       </a>
