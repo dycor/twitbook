@@ -1,8 +1,9 @@
-@import './colors';
+@import './_colors';
+@import './_variables';
 
 .flex-content-form {
     display: flex;
-    width: 70%;
+    max-width: 500px;
     justify-content: center;
     flex-direction: column;
     margin: auto;
@@ -10,6 +11,9 @@
     background-color: $second-color;
     border-radius: .3rem;
     padding: 2rem;
+    @media #{$responsive-large} {
+        width: 70%;
+    }
     > .error-message {
         color: $second-color-textWhite;
         font-weight: 600;
