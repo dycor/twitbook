@@ -1,5 +1,6 @@
 import React,{ useState, useContext } from 'react';
 import { AppContext } from "../App/AppProvider";
+import { Link } from "react-router-dom";
 import Tweet from "../Tweet";
 import Spinner from "../Spinner";
 import './style.scss';
@@ -60,16 +61,25 @@ const Search = () => {
               :
               <ul className="usersList">
               {users.map(user =>
+                <Link to={`/profile/${user.username}`} aria-label={`${user.username}'s profile`} className="user-card">
                   <div key={Math.random()}>
-                    <div className="user-card">
+                    <div className="user-card-content">
                       <img/>
-                      <span>{user.pseudo}</span>
-                      <span>{user.username}</span>
-                      <span>{user.nbFolloweds}</span>
-                      <span>{user.nbFollowers}</span>
+                      <div className="user-card-content-info">
+                        <div className="login">
+                          <span>{user.pseudo}</span>
+                          <span>@{user.username}</span>
+                        </div>
+                        <div className="follow">
+                          <span>{user.nbFolloweds} Followeds</span>
+                          <span>{user.nbFollowers} Followers</span>
+                        </div>
+                      </div>
                     </div>
 
-                  </div>)
+                  </div>
+                </Link>
+                )
               }
 
             </ul>

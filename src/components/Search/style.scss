@@ -31,8 +31,61 @@
       }
     }
   }
+
+  .usersList {
+    padding: 0;
+    margin: 0;
+  }
 }
 
+.user-card {
+  display: block;
+  text-decoration: none;
+  color: $colorWhite;
+  background-color: rgba($color: $second-color, $alpha: 0.7);
+  transition: background-color .3s ease;
+  &:hover {
+    background-color: rgba($color: $second-color, $alpha: 1.0);
+  }
+  &-content {
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid $second-color;
+    width: 100%;
+    > img {
+      width: 20%;
+      margin: 0 1rem;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 100%;
+      background-color: rgba($color: $primaryColor, $alpha: 1.0)
+    }
+    &-info {
+      display: flex;
+      width: 70%;
+      align-items: center;
+      .login, .follow {
+        display: flex;
+      }
+      .login {
+        flex-direction: column;
+        span {
+          &:first-child {
+            font-size: 1.2rem;
+            font-weight: 600;
+          }
+        }
+      }
+      .follow {
+        margin-left: 2rem;
+        > span:last-child {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+}
 
 .menu{
   display: flex;
