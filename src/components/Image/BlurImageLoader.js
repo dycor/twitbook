@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const styles = (loaded, src) => {
 
   return {
-    width: "400px",
+    width: "100%",
     height: "400px",
     maxHeight: "4Ovh",
     transition: "filter 1s ease",

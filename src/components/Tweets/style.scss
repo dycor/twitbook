@@ -1,5 +1,5 @@
-@import "styles/_colors.scss";
-@import "styles/_variables.scss";
+@import 'styles/_colors.scss';
+@import 'styles/_variables.scss';
 
 .tweetsList {
   padding: 0;
@@ -56,8 +56,11 @@
       box-shadow: var(--app-header-shadow);
       margin: 1rem;
       header {
+        width: 100%;
+
         figure {
           position: relative;
+          width: 100%;
           min-height: 30vh;
           padding: 0;
           margin: 0;
@@ -95,6 +98,7 @@
         flex-basis: 21%;
         margin: 2%;
         .figure {
+          width: 100%;
           min-height: 20vh;
           height: 20vh;
           overflow: hidden;
