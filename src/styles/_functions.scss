@@ -9,6 +9,14 @@
     margin-top: 5rem;
     background-color: $second-color;
     border-radius: .3rem;
+    padding: 2rem;
+    > .error-message {
+        color: $second-color-textWhite;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border-left: 5px red solid;
+        padding: 0.2rem 1rem;
+    }
     > .form-group {
         > label {
             display: flex;
@@ -16,13 +24,14 @@
             > span {
                 font-size: 1.1rem;
                 font-weight: 600;
+                margin-top: 1rem;
             }
             > input {
                 height: 30px;
                 font-size: 1.2rem;
                 border-radius: .3rem;
                 padding: .4rem;
-                margin-top: 1rem;
+                margin-top: .3rem;
             }
         }
     }
@@ -32,7 +41,7 @@
         span {
             > a {
                 text-decoration: none;
-                color: $third-color;
+                color: #72C5F8;
                 &:hover {
                     text-decoration: underline;
                 }
@@ -40,12 +49,13 @@
         }
     }
     > .form-action {
+        margin-top: 1rem;
         input {
             padding: .4rem .8rem;
             border-radius: .3rem;
             background-color: rgba($color: $third-color, $alpha: 0.8);
             border: 1px solid $main-color;
-            color: #000;
+            color: $colorBlack;
             cursor: pointer;
             font-size: 1.1rem;
             outline: none;

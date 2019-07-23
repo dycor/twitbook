@@ -1,21 +1,7 @@
-.form-group {
-  padding: 20px;
-  display: flex;
-  flex-flow: column wrap;
+@import 'styles/_colors.scss';
+@import 'styles/_variables.scss';
+@import 'styles/_functions.scss';
 
-  label {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    margin: 10px 0;
-
-    input {
-      border: 1px solid;
-    }
-  }
-}
-
-.submit {
-  margin: 0 auto;
-  display: block;
+.flex-content {
+    @extend .flex-content-form;
 }

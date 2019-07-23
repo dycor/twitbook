@@ -1,6 +1,7 @@
 import React, {useContext,useState} from 'react';
 import 'firebase/auth';
 import uuid from 'uuid';
+import { Link } from "react-router-dom";
 import './style.scss';
 
 import { AppContext } from "../App/AppProvider";
@@ -49,48 +50,52 @@ const SignUp = props => {
 
   };
   return (
-    <form onSubmit={handleSubmit}>
-      {errors.map(error => (
-        <p key={error}>{error}</p>
-      ))}
-      <div className="form-group">
-        <label>
-          <span>Nom:</span>
-          <input type="text" value={lastname} name="firstname" onChange={e => setLastname(e.target.value)}/>
-        </label>
-        <label>
-          <span>Prénom:</span>
-          <input type="text" value={firstname} name="lastname" onChange={e => setFirstname(e.target.value)}/>
-        </label>
-      </div>
+    <div className="home-content">
+      <form onSubmit={handleSubmit} className="flex-content-form">
+        {errors.map(error => (
+          <p key={error} className="error-message">{error}</p>
+        ))}
+        <div className="form-group">
+          <label>
+            <span>Nom:</span>
+            <input type="text" value={lastname} name="firstname" onChange={e => setLastname(e.target.value)}/>
+          </label>
+          <label>
+            <span>Prénom:</span>
+            <input type="text" value={firstname} name="lastname" onChange={e => setFirstname(e.target.value)}/>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            <span>Pseudo:</span>
+            <input type="text" name="pseudo" onChange={e => setPseudo(e.target.value)} value={pseudo}/>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            <span>Username:</span>
+            <input type="text" name="username" onChange={e => setUsername(e.target.value)} value={username}/>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            <span>Email:</span>
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} name="email" />
+          </label>
 
-      <div className="form-group">
-        <label>
-          <span>Pseudo:</span>
-          <input type="text" name="pseudo" onChange={e => setPseudo(e.target.value)} value={pseudo}/>
-        </label>
-      </div>
-      <div className="form-group">
-        <label>
-          <span>Username:</span>
-          <input type="text" name="username" onChange={e => setUsername(e.target.value)} value={username}/>
-        </label>
-      </div>
-
-      <div className="form-group">
-        <label>
-          <span>Email:</span>
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} name="email" />
-        </label>
-
-        <label>
-          <span>Password:</span>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="password" />
-        </label>
-      </div>
-
-      <input type="submit" value="S'inscrire" className="submit" />
-    </form>
+          <label>
+            <span>Password:</span>
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="password" />
+          </label>
+        </div>
+        <div className="form-action">
+          <input type="submit" value="S'inscrire" className="submit" />
+        </div>
+        <div className="form-options">
+          <span>Déjà un compte ? <Link to="login">Cliquez ici</Link></span>
+        </div>
+      </form>
+    </div>
   )
 
 };

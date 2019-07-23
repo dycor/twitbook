@@ -45,7 +45,7 @@ const SignIn  = props => {
       <div className="home-content">
         <form onSubmit={handleSubmit} className="flex-content-form">
           {errors.map(error => (
-            <p key={error}>{error}</p>
+            <p key={error} className="error-message">{error}</p>
           ))}
           <div className="form-group">
               <label>
