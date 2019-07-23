@@ -83,7 +83,7 @@ const Retweet =  ({tweetId, nbRetweet}) => {
 
     useEffect(() => {
         isRetweeted(tweetId).then(doc => setRetweeted(doc.exists));
-    }, []);
+    }, [isRetweeted, tweetId]);
 
     return retweeted ?
     <span className="like"><UnRetweetIcon  onClick={clickRetweet}></UnRetweetIcon>{countRetweet ?countRetweet :''}</span>
@@ -91,5 +91,5 @@ const Retweet =  ({tweetId, nbRetweet}) => {
 
 };
 
-      
+
 export default Retweet;

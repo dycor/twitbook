@@ -3,10 +3,10 @@ import firebase from 'firebase';
 import imageCompression from 'browser-image-compression';
 
 const ImageUpload = ({setImageUrl , setBase64Image}) => {
- 
+
   const handleImageUpload = async (file) => {
-    const ref = firebase.storage().ref();
-    
+    //const ref = firebase.storage().ref();
+
     //console.log('originalFile instanceof Blob', file instanceof Blob);
     //console.log(`originalFile size ${file.size / 1024 / 1024} MB`);
     const minifyOptions = {
@@ -27,20 +27,22 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
   const handleChange = async (e) => {
     const file = e.target.files[0];
     const minifiedFile = await handleImageUpload(file);
-    
+
     const ref = firebase.storage().ref();
-    
+
     const name = (+new Date()) + '-' + minifiedFile.name;
     const dirFolder = 'tweets/';
     const path = dirFolder + name;
-    
+
     const task = ref.child(path).put(minifiedFile);
     task.then((snapshot) => {
       snapshot.ref.getDownloadURL().then(function(downloadURL) {
-        document.querySelector('#uploaded-img').src = downloadURL;
-        document.querySelector('#uploaded-img').alt = name;
-        document.querySelector('#uploaded-img').title = name;
-        document.querySelector('#uploaded-img').style.display = "block";
+        if (document.querySelector('#uploaded-img')) {
+          document.querySelector('#uploaded-img').src = downloadURL;
+          document.querySelector('#uploaded-img').alt = name;
+          document.querySelector('#uploaded-img').title = name;
+          document.querySelector('#uploaded-img').style.display = "block";
+        }
 
         let reader = new FileReader();
         let base64 = '';
@@ -67,11 +69,11 @@ const ImageUpload = ({setImageUrl , setBase64Image}) => {
       }
     })*/;
   }
-  
+
   return <div className="component-upload-image">
         <label htmlFor="image-upload-input">Joindre une image</label>
         <input id="image-upload-input" name="image-upload-input" type="file" onChange={handleChange}/>
-        <img id="uploaded-img" width="50%"/>
+        <img id="uploaded-img" width="50%" alt=''/>
       </div>
 }
 
