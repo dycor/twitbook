@@ -35,7 +35,8 @@ h1 {
 
 .btn-primary {
   background-color: $third-color;
-  color: white;
+  color: $colorBlack;
+  cursor: pointer;
   border: none;
 }
 
