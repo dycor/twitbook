@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import '../style.scss';
 import { ReactComponent as Bell } from '../../../static/icons/bell.svg'
 import { ReactComponent as Home } from '../../../static/icons/home.svg'
-import { ReactComponent as Mail } from '../../../static/icons/mail.svg'
 import { ReactComponent as Search } from '../../../static/icons/search.svg'
 import { ReactComponent as Profile } from '../../../static/icons/profile.svg'
 import Logout from "../UnloggedNav/Logout";

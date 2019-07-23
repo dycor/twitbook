@@ -2,8 +2,35 @@
 @import 'styles/_variables.scss';
 
 .search-content {
-  width: 65%;
+  width: 100%;
   text-align: center;
+  &-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    input {
+      outline: none;
+      border: none;
+      border-top-left-radius: .3rem;
+      border-bottom-left-radius: .3rem;
+      font-size: 1.1rem;
+      padding: .5rem .5rem;
+      width: 60%;
+    }
+    button {
+      background-color: $colorWhite;
+      border:none;
+      border-left: 1px solid $second-color;
+      padding: .35rem .5rem;
+      border-top-right-radius: .3rem;
+      border-bottom-right-radius: .3rem;
+      .icon-search {
+        fill: $colorBlack;
+        height: 24px;
+        width: 24px;
+      }
+    }
+  }
 }
 
 

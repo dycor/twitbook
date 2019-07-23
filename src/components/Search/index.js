@@ -2,7 +2,8 @@ import React,{ useState, useContext } from 'react';
 import { AppContext } from "../App/AppProvider";
 import Tweet from "../Tweet";
 import Spinner from "../Spinner";
-import './style.scss'
+import './style.scss';
+import { ReactComponent as SearchIcon } from '../../static/icons/search.svg';
 
 const Search = () => {
   const [searchTerm,setSearchTerm] = useState('');
@@ -38,10 +39,10 @@ const Search = () => {
   };
 
   return <div className="search-content">
-    <h1>Search</h1>
-    <div>
-      <input value={searchTerm} type="text" onChange={e => setSearchTerm(e.target.value)}/>
-      <button onClick={submitSearch}><span role="img" aria-label="search">🔍</span></button>
+    <h1>Recherche</h1>
+    <div className="search-content-form">
+      <input value={searchTerm} type="text" onChange={e => setSearchTerm(e.target.value)} placeholder="Rechercher un Tweet ou une personne"/>
+      <button onClick={submitSearch}><SearchIcon className="icon-search"/></button>
     </div>
     <div className="menu">
       <span className={displayTweets ? 'active' : '' } onClick={() => setDisplayTweets(true)}> Tweets</span>
