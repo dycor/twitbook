@@ -66,10 +66,10 @@
 }
 main {
   width: 65%;
+  @media #{$responsive-medium} {
+    width: 100%;
+  }
   .home-content {
-    @media #{$responsive-medium} {
-      width: 100%;
-    }
     &--tweetlist-options {
       //position: relative;
       //height: 40px;

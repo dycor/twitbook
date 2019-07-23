@@ -4,12 +4,17 @@
 .App {
   > div {
     background-color: $main-color;
-  display: flex;
-  color: white;
-  min-height: 100vh;
-  @media #{$responsive-medium} {
-    flex-direction: column;
-  }
+    display: flex;
+    color: white;
+    min-height: 100vh;
+    @media #{$responsive-medium} {
+      flex-direction: column;
+    }
+    > header {
+      @media #{$responsive-medium} {
+        width: 100%;
+      }
+    }
   }
 }
 
