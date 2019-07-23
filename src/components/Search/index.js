@@ -26,6 +26,15 @@ const Search = () => {
         });
         setTweets(tweetsRes);
       }),
+      store.collection('tweets')
+        .where('username', '==',searchTerm )
+        .get().then( allDocs => {
+        let tweetsUserRes = allDocs.docs.map(tweet => {
+          return {...tweet.data(), id: tweet.id};
+        });
+        const tweetsSearch = [...tweets, ...tweetsUserRes];
+        setTweets(tweetsSearch);
+      }),
       store.collection('users')
         .where('username', '==',searchTerm )
         .get().then( allDocs => {
@@ -36,7 +45,6 @@ const Search = () => {
       })
     ]);
     setLoading(false);
-
   };
 
   return <div className="search-content">
