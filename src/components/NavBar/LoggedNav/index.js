@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import '../style.scss';
 import { ReactComponent as Bell } from '../../../static/icons/bell.svg'
 import { ReactComponent as Home } from '../../../static/icons/home.svg'
-import { ReactComponent as Mail } from '../../../static/icons/mail.svg'
 import { ReactComponent as Search } from '../../../static/icons/search.svg'
+import { ReactComponent as Profile } from '../../../static/icons/profile.svg'
 import Logout from "../UnloggedNav/Logout";
 
 const LoggedNav = ({ user, active, setActive }) =>
@@ -25,13 +25,13 @@ const LoggedNav = ({ user, active, setActive }) =>
               <p>Notifications</p>
             </Link>
           </li>
-          <li className={'li-navbar' + (active === 'messages' ? ' active' : '')}>
+          {/* <li className={'li-navbar' + (active === 'messages' ? ' active' : '')}>
             <Link to="/messages" onClick={() => setActive('messages')} aria-label="Messages"><Mail className={'icon'+(active === 'messages' ? ' active' : '')}/>
               <p>Messages</p>
             </Link>
-          </li>
-          <li>
-            <Link to={`/profile/${user.username}`} onClick={() => setActive('profile')} aria-label="Profile">
+          </li> */}
+          <li className={'li-navbar' + (active === 'messages' ? ' active' : '')}>
+            <Link to={`/profile/${user.username}`} onClick={() => setActive('profile')} aria-label="Profile"><Profile className={'icon'+(active === 'messages' ? ' active' : '')}/>
               <p>Mon profil</p>
             </Link>
           </li>

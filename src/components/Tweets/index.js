@@ -145,13 +145,13 @@ const Tweets = ({profile}) => {
                   <p className="hidden-message">Twitbookez</p>
                 </div>
               </a>
-              <ul className="tweetsList">
+              <div className="tweetsList">
               { tweets.map( tweet => <Tweet
                                             tweet={tweet}
                                             key={tweet.id} />
                                             )
               }
-              </ul>
+              </div>
               { loading && !endTweet.current ? <Spinner/> : <></>}
             </div>
           </>):

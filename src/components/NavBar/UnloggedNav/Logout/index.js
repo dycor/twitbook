@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import { Redirect } from 'react-router-dom';
 import {AppContext} from "../../../App/AppProvider";
+import { ReactComponent as LogoutIcone } from '../../../../static/icons/logout.svg'
 
 const Logout = () => {
   let { setUser } = useContext(AppContext);
@@ -10,7 +11,14 @@ const Logout = () => {
     setUser(null);
     return <Redirect to='/'/>
   };
-  return ( <button onClick={() => onClick()}>Logout</button> );
+  return ( 
+    <li className='li-navbar'>
+      <a href="#" onClick={() => onClick()}>
+        <LogoutIcone className='icon'/>
+        <p>Logout</p> 
+      </a>
+    </li>
+  );
 };
 
 export default Logout;

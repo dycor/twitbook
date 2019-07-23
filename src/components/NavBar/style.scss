@@ -1,92 +1,93 @@
 @import 'styles/_colors.scss';
 @import 'styles/_fonts.scss';
 @import 'styles/_variables.scss';
-nav {
+header {
   background-color: $second-color;
   border-right: 1px solid $grey;
   width: 35%;
-  @media #{$responsive-medium} {
-    border-top: 1px solid $grey;
-    border-right: none;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 0.5rem 0;
-  }
-
-  ul {
-    display: flex;
-    position: fixed;
-    left: 0;
-    flex-direction: column;
-    list-style: none;
-    @media #{$responsive-large} {
-      left: 0;
-    }
+  nav {
     @media #{$responsive-medium} {
+      border-top: 1px solid $grey;
+      border-right: none;
       width: 100%;
-      position: initial;
-      flex-direction: row;
+      display: flex;
       justify-content: center;
-      padding: 0;
+      padding: 0.5rem 0;
     }
 
-    > li.li-navbar {
+    ul {
       display: flex;
-      &:not(:last-child) {
-        margin-bottom: 3rem;
+      position: fixed;
+      left: 0;
+      flex-direction: column;
+      list-style: none;
+      @media #{$responsive-large} {
+        left: 0;
       }
       @media #{$responsive-medium} {
-        &:not(:last-child) {
-          margin-bottom: 0;
-        }
+        width: 100%;
+        position: initial;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 0 1rem;
       }
 
-      > a {
+      > li.li-navbar {
         display: flex;
-        align-items: center;
-        border-radius: 2rem;
-        padding: 0 2rem;
-        text-decoration: none;
-        transition: background-color .3s ease;
+        &:not(:last-child) {
+          margin-bottom: 3rem;
+        }
         @media #{$responsive-medium} {
-          padding: 0.5rem 1.3rem;
-        }
-        > svg.icon {
-          fill: $colorWhite;
-          transition: fill .3s ease;
-        }
-        > p {
-          margin-left: 2rem;
-          @extend .font-menu;
-          color: $colorWhite;
-          transition: color .3s ease;
-          @media #{$responsive-large} {
-            margin-left: 0.5rem;
-            font-size: 1.1rem;
-          }
-          @media #{$responsive-medium} {
-            display: none;
+          width: 15%;
+          &:not(:last-child) {
+            margin-bottom: 0;
           }
         }
-      }
-      &.active, &:hover {
+
         > a {
+          display: flex;
+          align-items: center;
+          border-radius: 2rem;
+          padding: 0 2rem;
+          text-decoration: none;
+          transition: background-color .3s ease;
+          @media #{$responsive-medium} {
+            padding: 0.5rem .6rem;
+          }
           > svg.icon {
-            fill: $primaryColor;
+            fill: $colorWhite;
+            transition: fill .3s ease;
           }
           > p {
-            color: $primaryColor;
+            margin-left: 2rem;
+            @extend .font-menu;
+            color: $colorWhite;
+            transition: color .3s ease;
+            @media #{$responsive-large} {
+              margin-left: 0.5rem;
+              font-size: 1.1rem;
+            }
+            @media #{$responsive-medium} {
+              display: none;
+            }
           }
         }
-      }
-      &:hover {
-        > a {
-          background-color: rgba(29,161,242, 0.1);
+        &.active, &:hover {
+          > a {
+            > svg.icon {
+              fill: $second-color-textBlue;
+            }
+            > p {
+              color: $second-color-textBlue;
+            }
+          }
+        }
+        &:hover {
+          > a {
+            background-color: rgba(29,161,242, 0.1);
+          }
         }
       }
     }
   }
-
 }
-

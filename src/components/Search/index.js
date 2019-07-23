@@ -1,8 +1,10 @@
 import React,{ useState, useContext } from 'react';
 import { AppContext } from "../App/AppProvider";
+import { Link } from "react-router-dom";
 import Tweet from "../Tweet";
 import Spinner from "../Spinner";
-import './style.scss'
+import './style.scss';
+import { ReactComponent as SearchIcon } from '../../static/icons/search.svg';
 
 const Search = () => {
   const [searchTerm,setSearchTerm] = useState('');
@@ -38,10 +40,10 @@ const Search = () => {
   };
 
   return <div className="search-content">
-    <h1>Search</h1>
-    <div>
-      <input value={searchTerm} type="text" onChange={e => setSearchTerm(e.target.value)}/>
-      <button onClick={submitSearch}><span role="img" aria-label="search">🔍</span></button>
+    <h1>Recherche</h1>
+    <div className="search-content-form">
+      <input value={searchTerm} type="text" onChange={e => setSearchTerm(e.target.value)} placeholder="Rechercher un Tweet ou une personne"/>
+      <button onClick={submitSearch}><SearchIcon className="icon-search"/></button>
     </div>
     <div className="menu">
       <span className={displayTweets ? 'active' : '' } onClick={() => setDisplayTweets(true)}> Tweets</span>
@@ -59,16 +61,25 @@ const Search = () => {
               :
               <ul className="usersList">
               {users.map(user =>
+                <Link to={`/profile/${user.username}`} aria-label={`${user.username}'s profile`} className="user-card">
                   <div key={Math.random()}>
-                    <div className="user-card">
+                    <div className="user-card-content">
                       <img/>
-                      <span>{user.pseudo}</span>
-                      <span>{user.username}</span>
-                      <span>{user.nbFolloweds}</span>
-                      <span>{user.nbFollowers}</span>
+                      <div className="user-card-content-info">
+                        <div className="login">
+                          <span>{user.pseudo}</span>
+                          <span>@{user.username}</span>
+                        </div>
+                        <div className="follow">
+                          <span>{user.nbFolloweds} Followeds</span>
+                          <span>{user.nbFollowers} Followers</span>
+                        </div>
+                      </div>
                     </div>
 
-                  </div>)
+                  </div>
+                </Link>
+                )
               }
 
             </ul>

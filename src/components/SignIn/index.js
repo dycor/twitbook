@@ -2,6 +2,7 @@ import React, {useContext,useState} from 'react';
 import 'firebase/auth';
 import { AppContext } from "../App/AppProvider";
 import { Link } from "react-router-dom";
+import "./signin.scss";
 
 const SignIn  = props => {
 
@@ -41,9 +42,10 @@ const SignIn  = props => {
     };
 
     return (
-      <form onSubmit={handleSubmit}>
+      <div className="home-content">
+        <form onSubmit={handleSubmit} className="flex-content-form">
           {errors.map(error => (
-            <p key={error}>{error}</p>
+            <p key={error} className="error-message">{error}</p>
           ))}
           <div className="form-group">
               <label>
@@ -56,9 +58,14 @@ const SignIn  = props => {
                   <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="password" />
               </label>
           </div>
-          <span>Vous n'avez pas de compte ? <Link to="signup">Cliquez ici</Link></span>
-          <input type="submit" value="Se connecter" className="submit" />
-      </form>
+          <div className="form-action">
+            <input type="submit" value="Se connecter" className="submit" />
+          </div>
+          <div className="form-options">
+            <span>Vous n'avez pas de compte ? <Link to="signup">Cliquez ici</Link></span>
+          </div>
+        </form>
+      </div>
     );
 };
 
