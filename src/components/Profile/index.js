@@ -9,7 +9,7 @@ const Profile = ({ match }) => {
   const { getStore,user } = useContext(AppContext);
   const [followed,setFollowed] = useState(false);
   const [loading,setLoading] = useState(false);
-  const [profile,setProfile] = useState('');
+  const [profile,setProfile] = useState(null);
   const [displayTweets,setDisplayTweets] = useState(true);
   const [tweetsLiked,setTweetsLiked] = useState([]);
   const store = getStore();
@@ -23,7 +23,6 @@ const Profile = ({ match }) => {
           setProfile({id:res.docs[0].id,...res.docs[0].data()});
         }
       });
-
       if(profile && user ){
         store.collection('followers').where('follower', '==', user.id).where('followed', '==', profile.id).get().then( doc => {
           if(doc.docs.length) setFollowed(true);
@@ -98,6 +97,8 @@ const Profile = ({ match }) => {
     });
   };
 
+  console.log(profile);
+
 
   return profile ? <>
     <div className="component-profile">
@@ -111,7 +112,7 @@ const Profile = ({ match }) => {
               <span>{profile.nbFolloweds} abonnements</span>
               <span>{profile.nbFollowers} abonnés</span>
             </div>
-            { user.id !== profile.id ?<button onClick={follow} style={style} className="btn-primary twitbook-follow">{followed ? 'Ne plus suivre':'Suivre'}</button> : <></>}
+            { user && user.id !== profile.id ?<button onClick={follow} style={style} className="btn-primary twitbook-follow">{followed ? 'Ne plus suivre':'Suivre'}</button> : <></>}
           </div>
         </div>
       </header>

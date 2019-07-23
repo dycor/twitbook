@@ -24,6 +24,8 @@ const Tweets = ({profile}) => {
 
   if(profile) user = profile;
 
+  console.log(user);
+
   useEffect(() => {
     if(!ref.current.mounted && user){
       setLoading(true);
