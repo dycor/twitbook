@@ -82,7 +82,7 @@ const Retweet =  ({tweetId, nbRetweet}) => {
     };
 
     useEffect(() => {
-        isRetweeted(tweetId).then(doc => setRetweeted(doc.exists));
+        isRetweeted(tweetId).then(doc => { if (doc) return setRetweeted(doc.exists)});
     }, [isRetweeted, tweetId]);
 
     return retweeted ?

@@ -13,8 +13,9 @@ const Like =  ({tweetId, nbLike}) => {
 
 
     useEffect(() => {
-        isLiked(tweetId).then(doc => setLiked(doc.exists));
-    }, []);
+        isLiked(tweetId).then(doc => { if (doc) return setLiked(doc.exists)});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tweetId]);
 
     const addLike = tweetId => {
         store.collection('likes').doc(user.userId + "_" + tweetId).set({
@@ -61,5 +62,5 @@ const Like =  ({tweetId, nbLike}) => {
       <span className="like"><LikeIcon  onClick={clickLike}></LikeIcon>{countLike ?countLike :''}</span>
 
 };
-      
+
 export default Like;
